@@ -1,4 +1,5 @@
 # vue3-element-admin
+> vue3+ts+element-plus后台
 
 ## Project setup
 ```
@@ -19,6 +20,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
