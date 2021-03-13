@@ -1,12 +1,14 @@
 import { createStore } from 'vuex'
+import permission, { IPermissionState } from '@/store/modules/permission'
+import getters from '@/store/getters'
 
-export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+export interface IRootState {
+  permission: IPermissionState;
+}
+
+export default createStore<IRootState>({
+  getters,
   modules: {
+    permission
   }
 })
