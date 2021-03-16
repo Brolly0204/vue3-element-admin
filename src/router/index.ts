@@ -100,7 +100,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   }
 ]
 
-const routes: Array<RouteRecordRaw> = constantRoutes
+export const asyncRoutes: Array<RouteRecordRaw> = [
+  {
+    path: '/login',
+    component: () => import('@/views/login/index.vue')
+  }
+]
+
+const routes: Array<RouteRecordRaw> = constantRoutes.concat(asyncRoutes)
 
 const router = createRouter({
   history: createWebHashHistory(),

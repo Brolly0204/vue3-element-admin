@@ -2,7 +2,7 @@ import {
   Module
 } from 'vuex'
 import { RouteRecordRaw } from 'vue-router'
-import { constantRoutes } from '@/router'
+import { constantRoutes, asyncRoutes } from '@/router'
 
 export interface IPermissionState {
   routes: Array<RouteRecordRaw>;
@@ -20,7 +20,7 @@ const permission: Module<IPermissionState, {}> = {
   },
   actions: {
     generateRoutes({ commit }) {
-      commit('SET_ROUTES', constantRoutes)
+      commit('SET_ROUTES', constantRoutes.concat(asyncRoutes))
     }
   }
 }

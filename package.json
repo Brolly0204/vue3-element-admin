@@ -51,8 +51,7 @@
   "lint-staged": {
     "src/**/*.{js,vue,ts}": [
       "vue-cli-service lint"
-    ],
-    "*.js": "eslint --cache --fix"
+    ]
   },
   "babel": {
     "plugins": [
