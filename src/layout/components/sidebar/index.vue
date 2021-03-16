@@ -6,12 +6,12 @@
       :background-color="scssVariables.menuBg"
       :text-color="scssVariables.menuText"
       :active-text-color="scssVariables.menuActiveText"
-      router
     >
       <sidebar-item
         v-for="route in permissionRoutes"
-        :item="route"
         :key="route.path"
+        :item="route"
+        :base-path="route.path"
       />
     </el-menu>
   </div>
@@ -22,10 +22,10 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { computed, defineComponent } from 'vue'
 import variables from '@/styles/variables.scss'
-import sidebarItem from './sidebar-item.vue'
+import SidebarItem from './SidebarItem.vue'
 
 export default defineComponent({
-  components: { sidebarItem },
+  components: { SidebarItem },
   name: 'Sidebar',
   setup () {
     const route = useRoute()
@@ -33,7 +33,6 @@ export default defineComponent({
 
     const activeMenu = computed(() => {
       const { path } = route
-      console.log('path', path)
       return path
     })
 
