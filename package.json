@@ -39,6 +39,7 @@
     "lint-staged": "^10.5.4",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "svg-sprite-loader": "^6.0.2",
     "typescript": "~3.9.3",
     "vue-cli-plugin-element-plus": "0.0.13"
   },
@@ -60,7 +61,8 @@
         {
           "libraryName": "element-plus",
           "styleLibraryName": "theme-chalk"
-        }
+        },
+        "@vue/babel-plugin-jsx"
       ]
     ]
   }

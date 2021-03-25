@@ -1,10 +1,15 @@
 <template>
   <div v-if="!item.meta || !item.meta.hidden">
-    <template v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children">
-      <sidebar-item-link v-if="theOnlyOneChild.meta" :to="resolvePath(theOnlyOneChild.path)">
+    <template
+      v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children"
+    >
+      <sidebar-item-link
+        v-if="theOnlyOneChild.meta"
+        :to="resolvePath(theOnlyOneChild.path)"
+      >
         <el-menu-item
           :index="resolvePath(theOnlyOneChild.path)"
-          :class="{'submenu-title-noDropdown': !isNest}"
+          :class="{ 'submenu-title-noDropdown': !isNest }"
         >
           <sidebar-menu-item
             :icon="theOnlyOneChild.meta.icon || (item.meta && item.meta.icon)"
@@ -24,7 +29,7 @@
       <sidebar-item
         v-for="child in item.children"
         :key="child.path"
-        :is-nest='true'
+        :is-nest="true"
         :item="child"
         :base-path="resolvePath(child.path)"
       >
@@ -106,7 +111,9 @@ export default defineComponent({
     })
 
     // 设置 alwaysShow: true，这样它就会忽略上面定义的规则，一直显示根路由 哪怕只有一个子路由也会显示为嵌套的路由菜单
-    const alwaysShowRootMenu = computed(() => props.item.meta && props.item.meta.alwaysShow)
+    const alwaysShowRootMenu = computed(
+      () => props.item.meta && props.item.meta.alwaysShow
+    )
 
     return {
       theOnlyOneChild,
