@@ -13,6 +13,13 @@ import './permission'
 // svg icons
 import initSvgIcon from '@/icons/index'
 
+//  本项目目前在生成环境下使用Mockjs，上线后应该移除
+if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { mockXHR } = require('../mock')
+  mockXHR()
+}
+
 createApp(App)
   .use(store)
   .use(router)

@@ -1,4 +1,5 @@
 'use strict'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
 const resolve = dir => path.join(__dirname, dir)
@@ -24,5 +25,14 @@ function chainWebpack(config) {
 }
 
 module.exports = {
-  chainWebpack
+  chainWebpack,
+  devServer: {
+    port: 8080,
+    open: true,
+    overlay: {
+      warnings: false,
+      errors: true
+    },
+    before: require('./mock/mock-server.js')
+  }
 }

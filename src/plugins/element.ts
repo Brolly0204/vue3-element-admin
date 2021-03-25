@@ -10,7 +10,8 @@ import {
   ElMenuItemGroup,
   ElForm,
   ElFormItem,
-  ElInput
+  ElInput,
+  ElTooltip
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -33,7 +34,8 @@ export default (app: ReturnType<typeof createApp>) => {
     ElMenuItemGroup,
     ElForm,
     ElFormItem,
-    ElInput
+    ElInput,
+    ElTooltip
   ]
 
   components.forEach(component => {
