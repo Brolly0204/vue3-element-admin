@@ -62,15 +62,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, onMounted, nextTick } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  ref,
+  onMounted,
+  nextTick
+} from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { validUsername } from '@/utils/validate'
+import useRouteQuery from './hooks/useRouteQuery'
 // import { ElForm } from 'element-plus'
 
 export default defineComponent({
   name: 'Login',
   setup() {
     const store = useStore()
+    const router = useRouter()
+
+    const { redirect, otherQuery } = useRouteQuery()
+
     const validateUsername = (rule: any, value: string, callback: Function) => {
       if (!validUsername(value)) {
         callback(new Error('Please enter the correct user name'))
@@ -141,6 +154,10 @@ export default defineComponent({
           loading.value = true
           store.dispatch('user/login', state.loginForm).then(() => {
             loading.value = false
+            router.push({
+              path: redirect.value || '/',
+              query: otherQuery.value
+            })
           }).catch(() => {
             loading.value = false
           })

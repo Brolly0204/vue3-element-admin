@@ -27,7 +27,6 @@ export default defineComponent({
     }
   },
   setup(props, { attrs }) {
-    console.log('attrs', attrs)
     const isExt = computed(() => isExternal(props.iconClass))
     const iconName = computed(() => `#icon-${props.iconClass}`)
     const svgClass = computed(() =>
@@ -40,7 +39,7 @@ export default defineComponent({
 
     const listeners = computed(() => {
       const fns = {}
-      Object.keys(attrs).forEach(key => {
+      Object.keys(attrs || {}).forEach(key => {
         if (key.startsWith('on')) {
           fns[key] = attrs[key]
         }

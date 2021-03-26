@@ -1,7 +1,7 @@
 import { Module, Mutation, Action } from 'vuex'
 import { IRootState } from '@/store'
 import { login } from './../../api/user'
-import { setToken } from '@/utils/auth'
+import { getToken, setToken } from '@/utils/auth'
 
 export interface IUserState {
   token: string;
@@ -21,7 +21,7 @@ export interface IUserInfo {
 }
 
 const state: IUserState = {
-  token: ''
+  token: getToken() || ''
 }
 
 const mutations: IMutations = {
