@@ -57,6 +57,31 @@
         :loading="loading"
         @click="handleLogin"
       >Login</el-button>
+
+      <!-- tips -->
+      <div class="tips-container" style="position:relative">
+        <div class="tips">
+          <span style="margin-right:16px;">Username : admin</span>
+          <span>Password : any</span>
+        </div>
+
+        <div class="tips">
+          <span style="margin-right:18px;">Username : editor</span>
+          <span>Password : any</span>
+        </div>
+
+        <el-button class="thirdparty-button" type="primary" @click="showDialog = true">
+          Or connect with
+        </el-button>
+      </div>
+
+      <el-dialog title="Or connect with" v-model="showDialog">
+        Can not be simulated on local, so please combine you own business simulation! ! !
+        <br>
+        <br>
+        <br>
+        <social-sign />
+      </el-dialog>
     </el-form>
   </div>
 </template>
@@ -74,13 +99,18 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { validUsername } from '@/utils/validate'
 import useRouteQuery from './hooks/useRouteQuery'
+import SocialSign from './components/SocialSign.vue'
 // import { ElForm } from 'element-plus'
 
 export default defineComponent({
   name: 'Login',
+  components: {
+    SocialSign
+  },
   setup() {
     const store = useStore()
     const router = useRouter()
+    const showDialog = ref(false)
 
     const { redirect, otherQuery } = useRouteQuery()
 
@@ -185,6 +215,7 @@ export default defineComponent({
       usernameRef,
       passwordRef,
       loading,
+      showDialog,
       ...toRefs(state)
     }
   }
@@ -250,6 +281,19 @@ $light_gray:#eee;
     padding: 160px 35px 0;
     overflow: hidden;
     box-sizing: border-box;
+
+    .tips-container {
+      .tips {
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #fff;
+      }
+      .thirdparty-button {
+        position: absolute;
+        right: 0;
+        bottom: 6px;
+      }
+    }
   }
 
   .svg-container {
