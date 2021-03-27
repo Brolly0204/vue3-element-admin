@@ -3,6 +3,13 @@ import Layout from '@/layout/index.vue'
 
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
+    path: '/login',
+    component: () => import('@/views/login/index.vue'),
+    meta: {
+      hidden: true
+    }
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
@@ -12,7 +19,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         name: 'Dashboard',
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'),
         meta: {
-          icon: 'el-icon-platform-eleme',
+          icon: 'dashboard',
           title: 'Dashboard'
         }
       }
@@ -21,7 +28,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: '/documentation',
     component: Layout,
-    // redirect: '/documentation/index',
+    redirect: '/documentation/index',
     children: [
       {
         path: 'index',
@@ -29,7 +36,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "documentation" */ '@/views/documentation/index.vue'),
         meta: {
           title: 'Documentation',
-          icon: 'el-icon-setting'
+          icon: 'documentation'
         }
       }
     ]
@@ -45,7 +52,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "guide" */ '@/views/guide/index.vue'),
         meta: {
           title: 'Guide',
-          icon: 'el-icon-s-promotion'
+          icon: 'guide'
         }
       }
     ]
@@ -60,7 +67,10 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/error-page/401.vue')
       }
     ]
-  },
+  }
+]
+
+export const asyncRoutes: Array<RouteRecordRaw> = [
   {
     path: '/permission',
     name: 'Permission',
@@ -68,7 +78,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     redirect: '/permission/page',
     meta: {
       title: 'Permission',
-      icon: 'el-icon-s-promotion'
+      icon: 'lock',
+      roles: ['admin', 'editor']
       // alwaysShow: true
     },
     children: [
@@ -77,7 +88,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/permission/page.vue'),
         name: 'PagePermission',
         meta: {
-          title: 'Page Permission'
+          title: 'Page Permission',
+          roles: ['admin']
         }
       },
       {
@@ -97,17 +109,25 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         }
       }
     ]
-  }
-]
-
-export const asyncRoutes: Array<RouteRecordRaw> = [
+  },
   {
-    path: '/login',
-    component: () => import('@/views/login/index.vue')
+    path: '/icon',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/icons/index.vue'),
+        name: 'Icons',
+        meta: {
+          title: '图标',
+          icon: 'icon'
+        }
+      }
+    ]
   }
 ]
 
-const routes: Array<RouteRecordRaw> = constantRoutes.concat(asyncRoutes)
+const routes: Array<RouteRecordRaw> = constantRoutes
 
 const router = createRouter({
   history: createWebHashHistory(),

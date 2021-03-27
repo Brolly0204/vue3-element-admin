@@ -5,6 +5,12 @@
     height: 100%;
     background-color: #304156;
 
+    .el-menu {
+      border: none;
+      height: 100%;
+      width: 100% !important;
+    }
+
     // 嵌套路由样式
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {

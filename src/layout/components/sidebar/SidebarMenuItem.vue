@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, toRefs, h, VNode } from 'vue'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
 export default defineComponent({
   name: 'SidebarMenuItem',
@@ -21,7 +22,7 @@ export default defineComponent({
         if (icon.value.includes('el-icon')) {
           vnodes.push(h('i', { class: [icon.value, 'sub-el-icon'] }))
         } else {
-          vnodes.push(h('svg-icon', { 'icon-class': icon }))
+          vnodes.push(h(SvgIcon, { 'icon-class': icon.value }))
         }
       }
       if (title) vnodes.push(h('span', { slot: 'title' }, title.value))
@@ -30,3 +31,21 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss">
+#app {
+  .sidebar-container {
+    .svg-icon {
+      margin-right: 16px;
+      vertical-align: middle;
+    }
+    .sub-el-icon {
+      color: currentColor;
+      width: 1em;
+      height: 1em;
+      margin-right: 12px;
+      margin-left: -2px;
+    }
+  }
+}
+</style>
