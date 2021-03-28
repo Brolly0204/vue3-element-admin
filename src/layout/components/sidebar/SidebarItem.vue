@@ -11,20 +11,19 @@
           :index="resolvePath(theOnlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <sidebar-menu-item
-            :icon="theOnlyOneChild.meta.icon || (item.meta && item.meta.icon)"
-            :title="theOnlyOneChild.meta.title"
-          />
+          <i v-if="icon && icon.includes('el-icon')" :class="[icon, 'sub-el-icon']"></i>
+          <svg-icon v-else-if="icon" :icon-class="icon" />
+          <template #title>
+            <span>{{theOnlyOneChild.meta.title}}</span>
+          </template>
         </el-menu-item>
       </sidebar-item-link>
     </template>
     <el-submenu v-else :index="resolvePath(item.path)" popper-append-to-body>
       <template #title>
-        <sidebar-menu-item
-          v-if="item.meta"
-          :icon="item.meta.icon"
-          :title="item.meta.title"
-        />
+        <i v-if="item.meta.icon.includes('el-icon')" :class="[item.meta.icon, 'sub-el-icon']"></i>
+        <svg-icon v-else-if="item.meta.icon" :icon-class="item.meta.icon" />
+        <span>{{item.meta.title}}</span>
       </template>
       <sidebar-item
         v-for="child in item.children"
@@ -43,14 +42,14 @@ import path from 'path'
 import { computed, defineComponent, PropType } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 import SidebarItemLink from './SidebarItemLink.vue'
-import SidebarMenuItem from './SidebarMenuItem.vue'
 import { isExternal } from '@/utils/validate'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 
 export default defineComponent({
   name: 'SidebarItem',
   components: {
     SidebarItemLink,
-    SidebarMenuItem
+    SvgIcon
   },
   props: {
     item: {
@@ -115,11 +114,34 @@ export default defineComponent({
       () => props.item.meta && props.item.meta.alwaysShow
     )
 
+    const icon = computed(() => {
+      return theOnlyOneChild.value?.meta?.icon || (props.item.meta && props.item.meta.icon)
+    })
+
     return {
       theOnlyOneChild,
       alwaysShowRootMenu,
-      resolvePath
+      resolvePath,
+      icon
     }
   }
 })
 </script>
+
+<style lang="scss">
+#app {
+  .sidebar-container {
+    .svg-icon {
+      margin-right: 16px;
+      vertical-align: middle;
+    }
+    .sub-el-icon {
+      color: currentColor;
+      width: 1em;
+      height: 1em;
+      margin-right: 12px;
+      margin-left: -2px;
+    }
+  }
+}
+</style>

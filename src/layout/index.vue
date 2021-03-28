@@ -1,9 +1,9 @@
 <template>
-  <div class="app-wrapper">
+  <div :class="classes" class="app-wrapper">
     <sidebar class="sidebar-container" />
     <div class="main-container">
       <div class="header">
-        <div class="navbar">navbar</div>
+        <navbar />
         <div class="tags-view">tagsview</div>
       </div>
       <div class="app-main">
@@ -15,13 +15,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
 import Sidebar from './components/sidebar/index.vue'
+import Navbar from './components/Navbar.vue'
 
 export default defineComponent({
   name: 'Layout',
   components: {
-    Sidebar
+    Sidebar,
+    Navbar
+  },
+  setup() {
+    const store = useStore()
+    const classes = computed(() => {
+      return {
+        hideSidebar: !store.getters.sidebar.opened,
+        openSidebar: store.getters.sidebar.opened,
+        withoutAnimation: store.getters.sidebar.withoutAnimation
+      }
+    })
+
+    return {
+      classes
+    }
   }
 })
 </script>
@@ -39,11 +56,6 @@ export default defineComponent({
 
       .header {
         background: cyan;
-
-        .navbar {
-          height: 50px;
-          background: #1890ff;
-        }
 
         .tags-view {
           height: 34px;

@@ -3,6 +3,8 @@ import {
 } from 'vuex'
 import { RouteRecordRaw } from 'vue-router'
 import { constantRoutes, asyncRoutes } from '@/router'
+import { IRootState } from '@/store'
+
 export interface IPermissionState {
   routes: Array<RouteRecordRaw>;
   addRoutes: Array<RouteRecordRaw>;
@@ -31,7 +33,7 @@ const filterAsyncRoutes = function(routes: RouteMapList, roles: string[]) {
   return accessedRoutes
 }
 
-const permission: Module<IPermissionState, {}> = {
+const permission: Module<IPermissionState, IRootState> = {
   namespaced: true,
   state: {
     routes: [],
