@@ -1,6 +1,7 @@
 import { Module, Mutation, Action } from 'vuex'
 import { IRootState } from '@/store'
-import { login, getInfo } from './../../api/user'
+import { resetRouter } from '@/router'
+import { login, getInfo, logout } from './../../api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 export interface IUserState {
@@ -83,6 +84,15 @@ const actions: IActions = {
         resolve(data)
       }).catch(error => {
         reject(error)
+      })
+    })
+  },
+  logout({ commit, state, dispatch }) {
+    return new Promise<void>((resolve, reject) => {
+      logout(state.token).then(() => {
+        dispatch('resetToken')
+        resetRouter()
+        resolve()
       })
     })
   },

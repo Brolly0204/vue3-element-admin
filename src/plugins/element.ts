@@ -15,7 +15,9 @@ import {
   ElDialog,
   ElDropdown,
   ElDropdownMenu,
-  ElDropdownItem
+  ElDropdownItem,
+  ElBreadcrumb,
+  ElBreadcrumbItem
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -43,7 +45,9 @@ export default (app: ReturnType<typeof createApp>) => {
     ElDialog,
     ElDropdown,
     ElDropdownMenu,
-    ElDropdownItem
+    ElDropdownItem,
+    ElBreadcrumb,
+    ElBreadcrumbItem
   ]
 
   components.forEach(component => {

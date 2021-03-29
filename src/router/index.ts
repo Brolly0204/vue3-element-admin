@@ -80,6 +80,7 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
       title: 'Permission',
       icon: 'lock',
       roles: ['admin', 'editor']
+      // redirect: 'noRedirect' // 不可点击跳转
       // alwaysShow: true
     },
     children: [
@@ -106,6 +107,7 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
         name: 'RolePermission',
         meta: {
           title: 'Role Permission'
+          // breadcrumb: false // 不显示这个路由的面包屑
         }
       }
     ]
@@ -129,9 +131,19 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
 
 const routes: Array<RouteRecordRaw> = constantRoutes
 
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes
-})
+const defineCreateRouter = () => {
+  return createRouter({
+    history: createWebHashHistory(),
+    routes
+  })
+}
+
+const router = defineCreateRouter()
 
 export default router
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export const resetRouter = () => {
+  const newRouter = defineCreateRouter()
+  ;(router as any).matcher = (newRouter as any).matcher
+}

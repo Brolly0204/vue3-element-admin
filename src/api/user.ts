@@ -16,3 +16,11 @@ export function getInfo(token: string) {
     params: { token }
   })
 }
+
+export function logout(token: string) {
+  return request({
+    url: '/vue-element-admin/user/logout',
+    method: 'post',
+    data: { token }
+  })
+}
