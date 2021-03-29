@@ -1,6 +1,16 @@
 <template>
   <div class="navbar">
     <hambuger  @toggleClick="toggleSidebar" :is-active="sidebar.opened"/>
+    <el-dropdown>
+      <div class="avatar-wrapper">
+        <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+        <i class="el-icon-caret-bottom" />
+      </div>
+
+      <template #dropdown>
+        <el-dropdown-menu></el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 
@@ -24,7 +34,8 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'avatar'
     ])
   }
 })
