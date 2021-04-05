@@ -37,8 +37,9 @@
 import { defineComponent } from 'vue'
 import Hambuger from '@/components/Hambuger/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import { useStore, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
 
 export default defineComponent({
   components: {

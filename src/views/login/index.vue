@@ -95,8 +95,8 @@ import {
   onMounted,
   nextTick
 } from 'vue'
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useStore } from '@/store'
 import { validUsername } from '@/utils/validate'
 import useRouteQuery from './hooks/useRouteQuery'
 import SocialSign from './components/SocialSign.vue'

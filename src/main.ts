@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store, { key } from './store'
 // element plus
 import ElementPlus from '@/plugins/element'
 // 初始化css 重置css默认样式
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 createApp(App)
-  .use(store)
+  .use(store, key)
   .use(router)
   .use(ElementPlus)
   .use(initSvgIcon)

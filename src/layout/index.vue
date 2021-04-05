@@ -4,7 +4,7 @@
     <div class="main-container">
       <div class="header">
         <navbar />
-        <div class="tags-view">tagsview</div>
+        <tags-view />
       </div>
       <div class="app-main">
         <h2>app main</h2>
@@ -16,15 +16,17 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 import Sidebar from './components/sidebar/index.vue'
 import Navbar from './components/Navbar.vue'
+import TagsView from './components/TagsView/index.vue'
 
 export default defineComponent({
   name: 'Layout',
   components: {
     Sidebar,
-    Navbar
+    Navbar,
+    TagsView
   },
   setup() {
     const store = useStore()
@@ -56,11 +58,6 @@ export default defineComponent({
 
       .header {
         background: cyan;
-
-        .tags-view {
-          height: 34px;
-          background: #12efff;
-        }
       }
 
       .app-main {

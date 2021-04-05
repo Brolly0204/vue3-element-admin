@@ -1,4 +1,4 @@
-import { Module, Mutation, Action } from 'vuex'
+import { Module, Mutation, Action, MutationTree, ActionTree } from 'vuex'
 import { IRootState } from '@/store'
 import { resetRouter } from '@/router'
 import { login, getInfo, logout } from './../../api/user'
@@ -12,13 +12,17 @@ export interface IUserState {
   roles: string[];
 }
 
-interface IMutations {
-  [prop: string]: Mutation<IUserState>;
-}
+// interface IMutations {
+//   [prop: string]: Mutation<IUserState>;
+// }
 
-interface IActions {
-  [prop: string]: Action<IUserState, IRootState>;
-}
+// interface IActions {
+//   [prop: string]: Action<IUserState, IRootState>;
+// }
+
+type IMutations = MutationTree<IUserState>
+
+type IActions = ActionTree<IUserState, IRootState>
 
 export interface IUserInfo {
   username: string;
