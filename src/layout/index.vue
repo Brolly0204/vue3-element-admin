@@ -6,10 +6,7 @@
         <navbar />
         <tags-view />
       </div>
-      <div class="app-main">
-        <h2>app main</h2>
-        <router-view></router-view>
-      </div>
+      <app-main />
     </div>
   </div>
 </template>
@@ -20,13 +17,15 @@ import { useStore } from '@/store'
 import Sidebar from './components/sidebar/index.vue'
 import Navbar from './components/Navbar.vue'
 import TagsView from './components/TagsView/index.vue'
+import AppMain from './components/AppMain.vue'
 
 export default defineComponent({
   name: 'Layout',
   components: {
     Sidebar,
     Navbar,
-    TagsView
+    TagsView,
+    AppMain
   },
   setup() {
     const store = useStore()
@@ -58,12 +57,6 @@ export default defineComponent({
 
       .header {
         background: cyan;
-      }
-
-      .app-main {
-        /* 50= navbar  50  如果有tagsview + 34  */
-        min-height: calc(100vh - 84px);
-        background: red;
       }
     }
   }

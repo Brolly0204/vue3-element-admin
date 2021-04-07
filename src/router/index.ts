@@ -34,7 +34,10 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         meta: {
           icon: 'dashboard',
           title: 'Dashboard',
-          affix: true // 固定显示在tagsView中
+          // https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/tags-view.html#affix-%E5%9B%BA%E9%92%89
+          affix: false, // 固定显示在tagsView中
+          // https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/tags-view.html#visitedviews-cachedviews
+          noCache: false // true不缓存 false缓存  默认所用路由会被缓存
         }
       }
     ]

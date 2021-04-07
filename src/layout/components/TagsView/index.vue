@@ -34,7 +34,7 @@
         top: top + 'px'
     }">
       <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
-      <li @click="closeSelectedTag(selectedTag)">Close</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
       <li @click="closeOthersTags">Close Others</li>
       <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
@@ -42,7 +42,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch, onMounted, ref, reactive, toRefs, getCurrentInstance } from 'vue'
+// 快捷导航(标签栏导航)
+// https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/tags-view.html#visitedviews-cachedviews
+import { computed, defineComponent, watch, onMounted, ref, reactive, toRefs, getCurrentInstance, nextTick } from 'vue'
 import { _RouteRecordBase, useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import path from 'path'
@@ -138,6 +140,8 @@ export default defineComponent({
     const addTags = () => {
       const { name } = route
       if (name) {
+        // https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/tags-view.html#visitedviews-cachedviews
+        // 添加可显示tag 以及 缓存tag所对应路由 meta: { noCache: false}
         store.dispatch('tagsView/addView', route)
       }
       return false
@@ -166,6 +170,18 @@ export default defineComponent({
       }
     }
 
+    // 刷新路由
+    const refreshSelectedTag = (view: RouteLocationWithFullPath) => {
+      // 刷新前 将该路由名称从缓存列表中移除
+      store.dispatch('tagsView/delCachedView', view).then(() => {
+        const { fullPath } = view
+        nextTick(() => {
+          router.replace('/redirect' + fullPath)
+        })
+      })
+    }
+
+    // 关闭当前右键的tag路由
     const closeSelectedTag = (view: RouteLocationWithFullPath) => {
       store.dispatch('tagsView/delView', view).then(({
         visitedViews
@@ -173,14 +189,10 @@ export default defineComponent({
         if (isActive(view)) {
           toLastView(visitedViews, view)
         }
-        console.log('view', view)
       })
     }
 
-    const refreshSelectedTag = (view: RouteLocationWithFullPath) => {
-      router.replace('/redirect' + view.fullPath)
-    }
-
+    // 关闭其他路由
     const closeOthersTags = () => {
       router.push(selectedTag.value)
       store.dispatch('tagsView/delOthersViews', selectedTag.value)
