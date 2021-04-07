@@ -19,14 +19,6 @@ const mutations: MutationTree<ITagsViewState> = {
     if (i > -1) {
       state.visitedViews.splice(i, 1)
     }
-    // for (const [i, v] of state.visitedViews.entries()) {
-    //   console.log(i, v)
-    //   if (v.path === view.path) {
-    //     state.visitedViews.splice(i, 1)
-    //     break
-    //   }
-    // }
-    console.log(i, state.visitedViews)
   }
 }
 

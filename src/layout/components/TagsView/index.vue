@@ -18,6 +18,7 @@
       >
         {{ tag.title }}
         <span
+          v-if="!isAffix(tag)"
           class="el-icon-close"
           @click.prevent.stop="closeSelectedTag(tag)"
         ></span>
@@ -27,16 +28,57 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch, onMounted } from 'vue'
-import { RouteRecordRaw, useRoute } from 'vue-router'
+import { computed, defineComponent, watch, onMounted, ref } from 'vue'
+import { _RouteRecordBase, useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
+import path from 'path'
+
+interface RouteLocationWithFullPath extends _RouteRecordBase {
+  fullPath?: string;
+}
 
 export default defineComponent({
   name: 'TagsView',
   setup() {
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
     const visitedTags = computed(() => store.state.tagsView.visitedViews)
+    const affixTags = ref<RouteLocationWithFullPath[]>([])
+    const permissionRoutes = computed(() => store.getters.permissionRoutes)
+
+    // 筛选出affix为true的route 直接显示在tagviews中
+    const filterAffixTags = (routes: RouteLocationWithFullPath[], basePath = '/') => {
+      let tags: RouteLocationWithFullPath[] = []
+      routes.forEach(route => {
+        if (route.meta && route.meta.affix) {
+          const tagPath = path.resolve(basePath, route.path)
+          tags.push({
+            name: route.name,
+            path: tagPath,
+            fullPath: tagPath,
+            meta: { ...route.meta }
+          } as RouteLocationWithFullPath)
+        }
+
+        if (route.children) {
+          const tempTags = filterAffixTags(route.children, route.path)
+          if (tempTags.length >= 1) {
+            tags = [...tags, ...tempTags]
+          }
+        }
+      })
+      return tags
+    }
+
+    const initTags = () => {
+      affixTags.value = filterAffixTags(permissionRoutes.value)
+      for (const tag of affixTags.value) {
+        if (tag.name) {
+          store.dispatch('tagsView/addVisitedView', tag)
+        }
+      }
+    }
 
     const addTags = () => {
       const { name } = route
@@ -46,16 +88,38 @@ export default defineComponent({
       return false
     }
 
-    const closeSelectedTag = (view: RouteRecordRaw) => {
+    const isActive = (tag: RouteLocationWithFullPath) => {
+      return tag.path === route.path
+    }
+
+    const isAffix = (tag: RouteLocationWithFullPath) => {
+      return tag.meta && tag.meta.affix
+    }
+
+    const toLastView = (visitedViews: RouteLocationWithFullPath[], view: RouteLocationWithFullPath) => {
+      const lastView = visitedViews.slice(-1)[0]
+      if (lastView) {
+        router.push(lastView.fullPath as string)
+      } else {
+        // 如果tag都没有了 删除的是Dashboard 就重定向回Dashboard（首页）
+        if (view.name === 'Dashboard') {
+          router.replace({ path: '/redirect' + view.fullPath })
+        } else {
+          // tag都没有了 删除的也不是Dashboard 只能跳转首页
+          router.push('/')
+        }
+      }
+    }
+
+    const closeSelectedTag = (view: RouteLocationWithFullPath) => {
       store.dispatch('tagsView/delView', view).then(({
         visitedViews
       }) => {
+        if (isActive(view)) {
+          toLastView(visitedViews, view)
+        }
         console.log('view', view)
       })
-    }
-
-    const isActive = (tag: RouteRecordRaw) => {
-      return tag.path === route.path
     }
 
     watch(() => route.path, () => {
@@ -63,12 +127,14 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      initTags()
       addTags()
     })
 
     return {
       visitedTags,
       isActive,
+      isAffix,
       closeSelectedTag
     }
   }
@@ -117,6 +183,32 @@ export default defineComponent({
           margin-right: 5px;
           background: #fff;
         }
+      }
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+//reset element css of el-icon-close
+.tags-view-wrapper {
+  .tags-view-item {
+    .el-icon-close {
+      width: 16px;
+      height: 16px;
+      vertical-align: 2px;
+      border-radius: 50%;
+      text-align: center;
+      transition: all .3s cubic-bezier(.645, .045, .355, 1);
+      transform-origin: 100% 50%;
+      &:before {
+        transform: scale(.6);
+        display: inline-block;
+        vertical-align: -3px;
+      }
+      &:hover {
+        background-color: #b4bccc;
+        color: #fff;
       }
     }
   }

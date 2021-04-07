@@ -20,7 +20,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'),
         meta: {
           icon: 'dashboard',
-          title: 'Dashboard'
+          title: 'Dashboard',
+          affix: false // 固定显示在tagsView中
         }
       }
     ]
@@ -36,7 +37,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "documentation" */ '@/views/documentation/index.vue'),
         meta: {
           title: 'Documentation',
-          icon: 'documentation'
+          icon: 'documentation',
+          affix: false
         }
       }
     ]
