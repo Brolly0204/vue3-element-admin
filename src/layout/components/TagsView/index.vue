@@ -2,6 +2,7 @@
   <div
     id="tags-view-container"
     class="tags-view-container"
+    ref="elRef"
   >
     <div class="tags-view-wrapper">
       <router-link
@@ -15,6 +16,7 @@
             active: isActive(tag)
           }
         ]"
+        @contextmenu.prevent="openMenu(tag, $event)"
       >
         {{ tag.title }}
         <span
@@ -24,11 +26,23 @@
         ></span>
       </router-link>
     </div>
+    <ul
+      class="contextmenu"
+      v-show="visible"
+      :style="{
+        left: left + 'px',
+        top: top + 'px'
+    }">
+      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
+      <li @click="closeSelectedTag(selectedTag)">Close</li>
+      <li @click="closeOthersTags">Close Others</li>
+      <li @click="closeAllTags(selectedTag)">Close All</li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch, onMounted, ref } from 'vue'
+import { computed, defineComponent, watch, onMounted, ref, reactive, toRefs, getCurrentInstance } from 'vue'
 import { _RouteRecordBase, useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import path from 'path'
@@ -40,12 +54,53 @@ interface RouteLocationWithFullPath extends _RouteRecordBase {
 export default defineComponent({
   name: 'TagsView',
   setup() {
+    const instance = getCurrentInstance()
+    const elRef = ref<HTMLDivElement>({} as HTMLDivElement)
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
     const visitedTags = computed(() => store.state.tagsView.visitedViews)
     const affixTags = ref<RouteLocationWithFullPath[]>([])
     const permissionRoutes = computed(() => store.getters.permissionRoutes)
+    const selectedTag = ref<RouteLocationWithFullPath>({} as RouteLocationWithFullPath)
+
+    const contextMenuState = reactive({
+      visible: false,
+      left: 0,
+      top: 0
+    })
+
+    const openMenu = (tag: RouteLocationWithFullPath, e: MouseEvent) => {
+      const menuMinWidth = 105
+      const { appContext } = instance!
+      const rootEl = appContext.app._container
+      const offsetLeft = rootEl.getBoundingClientRect().left
+      const offsetWidth = (elRef.value as HTMLDivElement).offsetWidth
+      const maxLeft = offsetWidth - menuMinWidth
+      let left = e.clientX - offsetLeft + 15
+      const top = e.clientY
+
+      // 边界判断
+      if (left > maxLeft) {
+        left = maxLeft
+      }
+      contextMenuState.left = left
+      contextMenuState.top = top
+      contextMenuState.visible = true
+      selectedTag.value = tag
+    }
+
+    const closeMenu = () => {
+      contextMenuState.visible = false
+    }
+
+    watch(() => contextMenuState.visible, (value) => {
+      if (value) {
+        document.body.addEventListener('click', closeMenu)
+      } else {
+        document.body.removeEventListener('click', closeMenu)
+      }
+    })
 
     // 筛选出affix为true的route 直接显示在tagviews中
     const filterAffixTags = (routes: RouteLocationWithFullPath[], basePath = '/') => {
@@ -122,6 +177,19 @@ export default defineComponent({
       })
     }
 
+    const refreshSelectedTag = (view: RouteLocationWithFullPath) => {
+      router.replace('/redirect' + view.fullPath)
+    }
+
+    const closeOthersTags = () => {
+      router.push(selectedTag.value)
+      store.dispatch('tagsView/delOthersViews', selectedTag.value)
+    }
+
+    const closeAllTags = (view: RouteLocationWithFullPath) => {
+      // todo
+    }
+
     watch(() => route.path, () => {
       addTags()
     })
@@ -135,7 +203,14 @@ export default defineComponent({
       visitedTags,
       isActive,
       isAffix,
-      closeSelectedTag
+      closeSelectedTag,
+      openMenu,
+      elRef,
+      selectedTag,
+      closeOthersTags,
+      refreshSelectedTag,
+      closeAllTags,
+      ...toRefs(contextMenuState)
     }
   }
 })
@@ -149,6 +224,7 @@ export default defineComponent({
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     height: 100%;
@@ -186,29 +262,57 @@ export default defineComponent({
       }
     }
   }
+  .contextmenu {
+    position: absolute;
+  }
 }
 </style>
 
 <style lang="scss">
 //reset element css of el-icon-close
-.tags-view-wrapper {
-  .tags-view-item {
-    .el-icon-close {
-      width: 16px;
-      height: 16px;
-      vertical-align: 2px;
-      border-radius: 50%;
-      text-align: center;
-      transition: all .3s cubic-bezier(.645, .045, .355, 1);
-      transform-origin: 100% 50%;
-      &:before {
-        transform: scale(.6);
-        display: inline-block;
-        vertical-align: -3px;
+.tags-view-container {
+  .tags-view-wrapper {
+    .tags-view-item {
+      .el-icon-close {
+        width: 16px;
+        height: 16px;
+        vertical-align: 2px;
+        border-radius: 50%;
+        text-align: center;
+        transition: all .3s cubic-bezier(.645, .045, .355, 1);
+        transform-origin: 100% 50%;
+        &:before {
+          transform: scale(.6);
+          display: inline-block;
+          vertical-align: -3px;
+        }
+        &:hover {
+          background-color: #b4bccc;
+          color: #fff;
+        }
       }
+    }
+  }
+
+  .contextmenu {
+    margin: 0;
+    background: #fff;
+    z-index: 3000;
+    position: absolute;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+
+    li {
+      margin: 0;
+      padding: 7px 16px;
+      cursor: pointer;
       &:hover {
-        background-color: #b4bccc;
-        color: #fff;
+        background: #eee;
       }
     }
   }

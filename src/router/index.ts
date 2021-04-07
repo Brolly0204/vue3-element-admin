@@ -3,6 +3,19 @@ import Layout from '@/layout/index.vue'
 
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
+    path: '/redirect',
+    component: Layout,
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index.vue')
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
     meta: {
@@ -21,7 +34,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         meta: {
           icon: 'dashboard',
           title: 'Dashboard',
-          affix: false // 固定显示在tagsView中
+          affix: true // 固定显示在tagsView中
         }
       }
     ]
