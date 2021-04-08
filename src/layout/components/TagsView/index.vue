@@ -6,9 +6,10 @@
   >
     <div class="tags-view-wrapper">
       <router-link
-        v-for="tag in visitedTags"
-        :key="tag.path"
+        v-for="(tag, index) in visitedTags"
+        :key="index"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+        :ref="tagsRefFn"
         tag="span"
         :class="[
           'tags-view-item',
@@ -44,12 +45,24 @@
 <script lang="ts">
 // 快捷导航(标签栏导航)
 // https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/tags-view.html#visitedviews-cachedviews
-import { computed, defineComponent, watch, onMounted, ref, reactive, toRefs, getCurrentInstance, nextTick } from 'vue'
-import { _RouteRecordBase, useRoute, useRouter } from 'vue-router'
+import {
+  computed,
+  defineComponent,
+  watch,
+  onMounted,
+  ref,
+  reactive,
+  toRefs,
+  getCurrentInstance,
+  nextTick,
+  onBeforeUpdate,
+  onUpdated
+} from 'vue'
+import { RouteRecordNormalized, RouteRecordRaw, useRoute, useRouter, NavigationFailure } from 'vue-router'
 import { useStore } from '@/store'
 import path from 'path'
 
-interface RouteLocationWithFullPath extends _RouteRecordBase {
+interface RouteLocationWithFullPath extends RouteRecordNormalized {
   fullPath?: string;
 }
 
@@ -58,6 +71,7 @@ export default defineComponent({
   setup() {
     const instance = getCurrentInstance()
     const elRef = ref<HTMLDivElement>({} as HTMLDivElement)
+    const tagsRef = ref<NavigationFailure[]>([])
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
@@ -70,6 +84,21 @@ export default defineComponent({
       visible: false,
       left: 0,
       top: 0
+    })
+
+    const tagsRefFn = (el: NavigationFailure) => {
+      if (el) {
+        tagsRef.value.push(el)
+      }
+    }
+
+    onBeforeUpdate(() => {
+      // 每次更新避免和之前重复累积
+      tagsRef.value = []
+    })
+
+    onUpdated(() => {
+      console.log(tagsRef.value)
     })
 
     const openMenu = (tag: RouteLocationWithFullPath, e: MouseEvent) => {
@@ -105,7 +134,7 @@ export default defineComponent({
     })
 
     // 筛选出affix为true的route 直接显示在tagviews中
-    const filterAffixTags = (routes: RouteLocationWithFullPath[], basePath = '/') => {
+    const filterAffixTags = (routes: Array<RouteLocationWithFullPath | RouteRecordRaw>, basePath = '/') => {
       let tags: RouteLocationWithFullPath[] = []
       routes.forEach(route => {
         if (route.meta && route.meta.affix) {
@@ -170,6 +199,22 @@ export default defineComponent({
       }
     }
 
+    const moveToCurrentTag = () => {
+      const tags = tagsRef.value
+      nextTick(() => {
+        for (const tag of tags) {
+          if (tag.to.path === route.path) {
+            // 详情 https://github.com/PanJiaChen/vue-element-admin/commit/11163146c09c6cdf0e2e354a632e1b9b92d46263
+            // when query is different then update
+            if (tag.to.fullPath !== route.fullPath) {
+              store.dispatch('tagsView/updateVisitedView', route)
+            }
+            break
+          }
+        }
+      })
+    }
+
     // 刷新路由
     const refreshSelectedTag = (view: RouteLocationWithFullPath) => {
       // 刷新前 将该路由名称从缓存列表中移除
@@ -195,7 +240,9 @@ export default defineComponent({
     // 关闭其他路由
     const closeOthersTags = () => {
       router.push(selectedTag.value)
-      store.dispatch('tagsView/delOthersViews', selectedTag.value)
+      store.dispatch('tagsView/delOthersViews', selectedTag.value).then(() => {
+        moveToCurrentTag()
+      })
     }
 
     const closeAllTags = (view: RouteLocationWithFullPath) => {
@@ -204,6 +251,9 @@ export default defineComponent({
 
     watch(() => route.path, () => {
       addTags()
+      // https://github.com/PanJiaChen/vue-element-admin/issues/1086
+      // 场景: 从列表页进入编辑页利用query传参 多次通过列表跳转编辑页 再点击tag切换query会变为最初渲染的query
+      moveToCurrentTag()
     })
 
     onMounted(() => {
@@ -222,6 +272,7 @@ export default defineComponent({
       closeOthersTags,
       refreshSelectedTag,
       closeAllTags,
+      tagsRefFn,
       ...toRefs(contextMenuState)
     }
   }
@@ -239,6 +290,7 @@ export default defineComponent({
     position: relative;
     display: flex;
     align-items: center;
+    flex-wrap: nowrap;
     height: 100%;
     .tags-view-item {
       height: 26px;
