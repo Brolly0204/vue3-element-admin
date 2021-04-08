@@ -4,7 +4,7 @@
     class="tags-view-container"
     ref="elRef"
   >
-    <div class="tags-view-wrapper">
+    <scroll-pane class="tags-view-wrapper">
       <router-link
         v-for="(tag, index) in visitedTags"
         :key="index"
@@ -26,7 +26,7 @@
           @click.prevent.stop="closeSelectedTag(tag)"
         ></span>
       </router-link>
-    </div>
+    </scroll-pane>
     <ul
       class="contextmenu"
       v-show="visible"
@@ -61,6 +61,7 @@ import {
 import { RouteRecordNormalized, RouteRecordRaw, useRoute, useRouter, NavigationFailure } from 'vue-router'
 import { useStore } from '@/store'
 import path from 'path'
+import ScrollPane from './ScrollPane.vue'
 
 interface RouteLocationWithFullPath extends RouteRecordNormalized {
   fullPath?: string;
@@ -68,6 +69,9 @@ interface RouteLocationWithFullPath extends RouteRecordNormalized {
 
 export default defineComponent({
   name: 'TagsView',
+  components: {
+    ScrollPane
+  },
   setup() {
     const instance = getCurrentInstance()
     const elRef = ref<HTMLDivElement>({} as HTMLDivElement)
@@ -291,12 +295,8 @@ export default defineComponent({
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    height: 100%;
     .tags-view-item {
+      display: inline-block;
       height: 26px;
       line-height: 26px;
       border: 1px solid #d8dce5;
