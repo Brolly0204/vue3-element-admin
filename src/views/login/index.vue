@@ -300,7 +300,7 @@ $light_gray:#eee;
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
     vertical-align: middle;
-    width: 30px;
+    /* width: 30px; */
     display: inline-block;
   }
 
