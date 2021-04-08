@@ -247,6 +247,10 @@ export default defineComponent({
 
     const closeAllTags = (view: RouteLocationWithFullPath) => {
       // todo
+      store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
+        if (affixTags.value.some(tag => tag.path === view.path)) return
+        toLastView(visitedViews, view)
+      })
     }
 
     watch(() => route.path, () => {

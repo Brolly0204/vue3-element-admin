@@ -45,6 +45,13 @@ const mutations: MutationTree<ITagsViewState> = {
       state.cachedViews = []
     }
   },
+  DEL_ALL_VISITED_VIEWS(state) {
+    const affixTags = state.visitedViews.filter(tag => tag.meta && tag.meta.affix)
+    state.visitedViews = affixTags
+  },
+  DEL_ALL_CACHED_VIEWS(state) {
+    state.cachedViews = []
+  },
   UPDATE_VISITED_VIEW(state, view: RouteRecordRaw) {
     for (let v of state.visitedViews) {
       if (v.path === view.path) {
@@ -107,6 +114,28 @@ const actions: ActionTree<ITagsViewState, IRootState> = {
       resolve({
         visibleViews: [...state.visitedViews]
       })
+    })
+  },
+  delAllViews({ dispatch, state }) {
+    return new Promise(resolve => {
+      dispatch('delAllVisitedViews')
+      dispatch('delAllCachedViews')
+      resolve({
+        visitedViews: [...state.visitedViews],
+        cachedViews: [...state.cachedViews]
+      })
+    })
+  },
+  delAllVisitedViews({ commit, state }) {
+    return new Promise(resolve => {
+      commit('DEL_ALL_VISITED_VIEWS')
+      resolve([...state.visitedViews])
+    })
+  },
+  delAllCachedViews({ commit, state }) {
+    return new Promise(resolve => {
+      commit('DEL_ALL_CACHED_VIEWS')
+      resolve([...state.cachedViews])
     })
   },
   updateVisitedView({ commit }, view: RouteRecordRaw) {
