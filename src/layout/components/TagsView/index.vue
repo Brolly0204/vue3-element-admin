@@ -116,11 +116,10 @@ export default defineComponent({
       const { appContext } = instance!
       const rootEl = appContext.app._container
       const offsetLeft = rootEl.getBoundingClientRect().left
-      const offsetWidth = (elRef.value as HTMLDivElement).offsetWidth
+      const offsetWidth = rootEl.offsetWidth
       const maxLeft = offsetWidth - menuMinWidth
       let left = e.clientX - offsetLeft + 15
       const top = e.clientY
-
       // 边界判断
       if (left > maxLeft) {
         left = maxLeft
