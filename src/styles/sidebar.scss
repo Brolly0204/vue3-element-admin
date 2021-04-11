@@ -31,6 +31,12 @@
     }
   }
 
+  .openSidebar {
+    .sidebar-container {
+      width: $sideBarWidth !important;
+    }
+  }
+
   // sidebar收起样式
   .hideSidebar {
     .sidebar-container {
@@ -100,9 +106,34 @@
       min-width: $sideBarWidth !important;
     }
   }
-  
-  // sidebar展开样式
-  .openSidebar {
 
+  // mobile responsive
+  .mobile {
+    .main-container {
+      margin-left: 0px;
+    }
+
+    .sidebar-container {
+      position: absolute;
+      left: 0;
+      transition: transform .28s;
+      width: $sideBarWidth !important;
+      z-index: 111;
+    }
+
+    &.hideSidebar {
+      .sidebar-container {
+        pointer-events: none;
+        transition-duration: 0.3s;
+        transform: translate3d(-$sideBarWidth, 0, 0);
+      }
+    }
+  }
+
+  .withoutAnimation {
+    .main-container,
+    .sidebar-container {
+      transition: none;
+    }
   }
 }
