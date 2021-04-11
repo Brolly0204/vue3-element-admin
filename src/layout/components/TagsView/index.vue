@@ -7,6 +7,7 @@
     <scroll-pane
       ref="scrollPaneRef"
       class="tags-view-wrapper"
+      @scroll="handleScroll"
     >
       <router-link
         v-for="(tag, index) in visitedTags"
@@ -92,6 +93,7 @@ export default defineComponent({
     const permissionRoutes = computed(() => store.getters.permissionRoutes)
     const selectedTag = ref<RouteLocationWithFullPath>({} as RouteLocationWithFullPath)
 
+    // 右键菜单相关状态
     const contextMenuState = reactive({
       visible: false,
       left: 0,
@@ -263,6 +265,13 @@ export default defineComponent({
       })
     }
 
+    // scroll事件监听函数
+    const handleScroll = () => {
+      if (contextMenuState.visible) { // 滚动tag时 关闭menu
+        contextMenuState.visible = false
+      }
+    }
+
     watch(() => route.path, () => {
       // 避免taglist追加发生更新 导致叠加重复
       tagsRef.value = []
@@ -288,6 +297,7 @@ export default defineComponent({
       closeOthersTags,
       refreshSelectedTag,
       closeAllTags,
+      handleScroll,
       tagsRefFn,
       tagsRef,
       scrollPaneRef,

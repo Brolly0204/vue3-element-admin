@@ -10,7 +10,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, ComponentPublicInstance, computed, getCurrentInstance } from 'vue'
+import {
+  defineComponent,
+  ref,
+  ComponentPublicInstance,
+  computed,
+  getCurrentInstance,
+  onMounted,
+  onBeforeUnmount
+} from 'vue'
 import { TagRoute } from './index.vue'
 
 interface IWheelEvent extends WheelEvent {
@@ -21,12 +29,13 @@ export interface IScrollPaneState {
   moveToTarget: (currentTag: TagRoute) => void;
 }
 
-// 保证左右边界nextTag or prevTag移动时 不同好贴边 能留出4px间距
+// 保证左右边界nextTag or prevTag移动时 不刚好贴边 能留出4px间距
 const tagAndTagSpacing = 4 // tagAndTagSpacing
 
 export default defineComponent({
   name: 'ScrollPane',
-  setup() {
+  emits: ['scroll'],
+  setup(props, { emit }) {
     const instance = getCurrentInstance()!
     const scrollConatinerRef = ref<ComponentPublicInstance>({} as ComponentPublicInstance)
     const scrollWrapper = computed<HTMLDivElement>(() => scrollConatinerRef.value.$refs.wrap as HTMLDivElement)
@@ -80,6 +89,19 @@ export default defineComponent({
         }
       }
     }
+
+    // 发布scroll事件
+    const emitScroll = () => {
+      emit('scroll')
+    }
+
+    onMounted(() => {
+      scrollWrapper.value.addEventListener('scroll', emitScroll, true)
+    })
+
+    onBeforeUnmount(() => {
+      scrollWrapper.value.removeEventListener('scroll', emitScroll)
+    })
 
     return {
       handleScroll,
