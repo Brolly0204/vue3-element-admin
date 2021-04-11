@@ -21,7 +21,6 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const cachedViews = computed(() => store.state.tagsView.cachedViews)
-    console.log(cachedViews)
     return {
       cachedViews
     }

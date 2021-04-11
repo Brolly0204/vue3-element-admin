@@ -4,7 +4,10 @@
     class="tags-view-container"
     ref="elRef"
   >
-    <scroll-pane class="tags-view-wrapper">
+    <scroll-pane
+      ref="scrollPaneRef"
+      class="tags-view-wrapper"
+    >
       <router-link
         v-for="(tag, index) in visitedTags"
         :key="index"
@@ -56,16 +59,20 @@ import {
   getCurrentInstance,
   nextTick,
   onBeforeUpdate,
-  onUpdated
+  onUpdated,
+  ComponentPublicInstance
 } from 'vue'
 import { RouteRecordNormalized, RouteRecordRaw, useRoute, useRouter, NavigationFailure } from 'vue-router'
 import { useStore } from '@/store'
 import path from 'path'
-import ScrollPane from './ScrollPane.vue'
+import ScrollPane, { IScrollPaneState } from './ScrollPane.vue'
 
 interface RouteLocationWithFullPath extends RouteRecordNormalized {
   fullPath?: string;
 }
+
+type TagsViewComponentInstance = ComponentPublicInstance<{}, {}, IScrollPaneState>
+export type TagRoute = ComponentPublicInstance<{}, {}, NavigationFailure>
 
 export default defineComponent({
   name: 'TagsView',
@@ -75,7 +82,8 @@ export default defineComponent({
   setup() {
     const instance = getCurrentInstance()
     const elRef = ref<HTMLDivElement>({} as HTMLDivElement)
-    const tagsRef = ref<NavigationFailure[]>([])
+    const scrollPaneRef = ref<TagsViewComponentInstance>({} as TagsViewComponentInstance)
+    const tagsRef = ref<TagRoute[]>([])
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
@@ -90,7 +98,7 @@ export default defineComponent({
       top: 0
     })
 
-    const tagsRefFn = (el: NavigationFailure) => {
+    const tagsRefFn = (el: TagRoute) => {
       if (el) {
         tagsRef.value.push(el)
       }
@@ -99,10 +107,6 @@ export default defineComponent({
     onBeforeUpdate(() => {
       // 每次更新避免和之前重复累积
       tagsRef.value = []
-    })
-
-    onUpdated(() => {
-      console.log(tagsRef.value)
     })
 
     const openMenu = (tag: RouteLocationWithFullPath, e: MouseEvent) => {
@@ -208,6 +212,8 @@ export default defineComponent({
       nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === route.path) {
+            // 路由tag点击激活时 对应tag滚动到相应视野中
+            scrollPaneRef.value.moveToTarget(tag)
             // 详情 https://github.com/PanJiaChen/vue-element-admin/commit/11163146c09c6cdf0e2e354a632e1b9b92d46263
             // when query is different then update
             if (tag.to.fullPath !== route.fullPath) {
@@ -258,6 +264,8 @@ export default defineComponent({
     }
 
     watch(() => route.path, () => {
+      // 避免taglist追加发生更新 导致叠加重复
+      tagsRef.value = []
       addTags()
       // https://github.com/PanJiaChen/vue-element-admin/issues/1086
       // 场景: 从列表页进入编辑页利用query传参 多次通过列表跳转编辑页 再点击tag切换query会变为最初渲染的query
@@ -281,6 +289,8 @@ export default defineComponent({
       refreshSelectedTag,
       closeAllTags,
       tagsRefFn,
+      tagsRef,
+      scrollPaneRef,
       ...toRefs(contextMenuState)
     }
   }
