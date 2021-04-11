@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-scrollbar wrap-class="scrollbar-wrapper">
+      <logo :collapse="isCollapse" />
       <el-menu
         :unique-opened="false"
         :default-active="activeMenu"
@@ -28,9 +29,13 @@ import { computed, defineComponent } from 'vue'
 import { useStore } from '@/store'
 import variables from '@/styles/variables.scss'
 import SidebarItem from './SidebarItem.vue'
+import Logo from './Logo.vue'
 
 export default defineComponent({
-  components: { SidebarItem },
+  components: {
+    Logo,
+    SidebarItem
+  },
   name: 'Sidebar',
   setup () {
     const route = useRoute()
