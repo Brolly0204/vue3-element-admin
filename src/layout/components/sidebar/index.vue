@@ -1,22 +1,24 @@
 <template>
   <div>
-    <el-menu
-      :unique-opened="false"
-      :default-active="activeMenu"
-      :background-color="scssVariables.menuBg"
-      :text-color="scssVariables.menuText"
-      :active-text-color="scssVariables.menuActiveText"
-      :collapse="isCollapse"
-      :collapse-transition="false"
-      mode="vertical"
-    >
-      <sidebar-item
-        v-for="route in permissionRoutes"
-        :key="route.path"
-        :item="route"
-        :base-path="route.path"
-      />
-    </el-menu>
+    <el-scrollbar wrap-class="scrollbar-wrapper">
+      <el-menu
+        :unique-opened="false"
+        :default-active="activeMenu"
+        :background-color="scssVariables.menuBg"
+        :text-color="scssVariables.menuText"
+        :active-text-color="scssVariables.menuActiveText"
+        :collapse="isCollapse"
+        :collapse-transition="false"
+        mode="vertical"
+      >
+        <sidebar-item
+          v-for="route in permissionRoutes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
+      </el-menu>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -72,5 +74,11 @@ export default defineComponent({
       margin-left: -2px;
     }
   }
+}
+</style>
+
+<style lang="css">
+.scrollbar-wrapper {
+  overflow-x: hidden !important;
 }
 </style>
