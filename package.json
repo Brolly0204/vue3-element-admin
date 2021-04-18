@@ -11,6 +11,7 @@
     "@types/path-to-regexp": "^1.7.0",
     "axios": "^0.21.1",
     "element-plus": "^1.0.2-beta.33",
+    "fuse.js": "^6.4.6",
     "js-cookie": "^2.2.1",
     "mockjs": "^1.1.0",
     "normalize.css": "^8.0.1",

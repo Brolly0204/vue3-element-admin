@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, RouteRecordRaw } from 'vue-router'
 import { computed, defineComponent } from 'vue'
 import { useStore } from '@/store'
 import variables from '@/styles/variables.scss'
@@ -47,7 +47,7 @@ export default defineComponent({
     })
 
     const permissionRoutes = computed(() => {
-      return store.getters.permissionRoutes
+      return store.getters.permissionRoutes as RouteRecordRaw[]
     })
 
     const isCollapse = computed(() => !store.getters.sidebar.opened)

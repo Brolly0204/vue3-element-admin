@@ -3,9 +3,14 @@
     <hambuger  @toggleClick="toggleSidebar" :is-active="sidebar.opened"/>
     <breadcrumb />
     <div class="right-menu">
+      <!-- 头部功能 -->
       <template v-if="device !== 'mobile'">
+        <!-- 搜索 -->
+        <search class="right-menu-item" />
+        <!-- 全屏 -->
         <screenfull id="screefull" class="right-menu-item hover-effect" />
       </template>
+
       <el-dropdown
         class="avatar-container right-menu-item hover-effect">
         <div class="avatar-wrapper">
@@ -41,6 +46,7 @@ import { computed, defineComponent } from 'vue'
 import Hambuger from '@/components/Hambuger/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Screenfull from '@/components/Screenfull/index.vue'
+import Search from '@/components/HeaderSearch/index.vue'
 import { mapGetters } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
@@ -49,7 +55,8 @@ export default defineComponent({
   components: {
     Hambuger,
     Breadcrumb,
-    Screenfull
+    Screenfull,
+    Search
   },
   setup() {
     const store = useStore()
