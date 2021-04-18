@@ -10,7 +10,7 @@
   </svg>
 </template>
 
-<script>
+<script lang="ts">
 import { isExternal } from '@/utils/validate'
 import { computed, defineComponent } from 'vue'
 
@@ -27,7 +27,7 @@ export default defineComponent({
     }
   },
   setup(props, { attrs }) {
-    const isExt = computed(() => isExternal(props.iconClass))
+    const isExt = computed(() => isExternal(props.iconClass || ''))
     const iconName = computed(() => `#icon-${props.iconClass}`)
     const svgClass = computed(() =>
       props.className ? `svg-icon ${props.className}` : 'svg-icon'
@@ -38,7 +38,7 @@ export default defineComponent({
     }))
 
     const listeners = computed(() => {
-      const fns = {}
+      const fns = {} as { [prop: string]: any }
       Object.keys(attrs || {}).forEach(key => {
         if (key.startsWith('on')) {
           fns[key] = attrs[key]

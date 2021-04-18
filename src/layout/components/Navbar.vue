@@ -3,6 +3,9 @@
     <hambuger  @toggleClick="toggleSidebar" :is-active="sidebar.opened"/>
     <breadcrumb />
     <div class="right-menu">
+      <template v-if="device !== 'mobile'">
+        <screenfull id="screefull" class="right-menu-item hover-effect" />
+      </template>
       <el-dropdown
         class="avatar-container right-menu-item hover-effect">
         <div class="avatar-wrapper">
@@ -34,9 +37,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import Hambuger from '@/components/Hambuger/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Screenfull from '@/components/Screenfull/index.vue'
 import { mapGetters } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
@@ -44,12 +48,14 @@ import { useStore } from '@/store'
 export default defineComponent({
   components: {
     Hambuger,
-    Breadcrumb
+    Breadcrumb,
+    Screenfull
   },
   setup() {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
+    const device = computed(() => store.state.app.device)
     const toggleSidebar = () => {
       store.dispatch('app/toggleSidebar')
     }
@@ -66,7 +72,8 @@ export default defineComponent({
 
     return {
       toggleSidebar,
-      logout
+      logout,
+      device
     }
   },
   computed: {
@@ -89,6 +96,23 @@ export default defineComponent({
     float: right;
     height: 100%;
     line-height: 50px;
+
+    .right-menu-item {
+      display: inline-block;
+      padding: 0 8px;
+      height: 100%;
+      font-size: 18px;
+      color: #5a5e66;
+      vertical-align: text-bottom;
+      &.hover-effect {
+        cursor: pointer;
+        transition: background .3s;
+
+        &:hover {
+          background: rgba(0, 0, 0, .025);
+        }
+      }
+    }
 
     &-item {
       display: inline-block;

@@ -18,7 +18,8 @@ import {
   ElDropdownItem,
   ElBreadcrumb,
   ElBreadcrumbItem,
-  ElScrollbar
+  ElScrollbar,
+  ElMessage
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -55,6 +56,8 @@ export default (app: ReturnType<typeof createApp>) => {
   components.forEach(component => {
     app.component(component.name, component)
   })
+
+  app.config.globalProperties.$message = ElMessage
 
   // 全局配置
   // 该对象目前支持 size 与 zIndex 字段。size 用于改变组件的默认尺寸 small，zIndex 设置弹框的初始 z-index（默认值：2000）。
