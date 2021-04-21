@@ -1,4 +1,5 @@
 <script lang="ts">
+import { h } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 export default {
@@ -12,7 +13,7 @@ export default {
       query
     })
     return () => {
-      return null
+      return h('template')
     }
   }
 }
