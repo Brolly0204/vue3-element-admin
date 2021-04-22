@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { App } from 'vue'
 import {
   locale,
   ElButton,
@@ -23,7 +23,10 @@ import {
   ElSelect,
   ElOption,
   ElRadioGroup,
-  ElRadioButton
+  ElRadioButton,
+  ElTag,
+  ElTabs,
+  ElTabPane
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -32,7 +35,7 @@ import lang from 'element-plus/lib/locale/lang/zh-cn'
 // Element Plus 直接使用了 Day.js 项目的时间日期国际化设置, 并且会自动全局设置已经导入的 Day.js 国际化配置。
 import 'dayjs/locale/zh-cn'
 
-export default (app: ReturnType<typeof createApp>) => {
+export default (app: App) => {
   locale(lang)
 
   // 组件列表
@@ -58,7 +61,10 @@ export default (app: ReturnType<typeof createApp>) => {
     ElSelect,
     ElOption,
     ElRadioGroup,
-    ElRadioButton
+    ElRadioButton,
+    ElTag,
+    ElTabs,
+    ElTabPane
   ]
 
   components.forEach(component => {
