@@ -85,6 +85,13 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/error-page/401.vue')
       }
     ]
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/error-page/404.vue'),
+    meta: {
+      hidden: true
+    }
   }
 ]
 
@@ -144,161 +151,14 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
         }
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+    meta: {
+      hidden: true
+    }
   }
-  // test测试
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index.vue'),
-  //       name: 'Icons',
-  //       meta: {
-  //         title: '图标',
-  //         icon: 'icon'
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/icons/index.vue'),
-  //       name: 'Icons',
-  //       meta: {
-  //         title: '图标',
-  //         icon: 'icon'
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/permission',
-  //   name: 'Permission',
-  //   component: Layout,
-  //   redirect: '/permission/page',
-  //   meta: {
-  //     title: 'Permission',
-  //     icon: 'lock',
-  //     roles: ['admin', 'editor']
-  //     // redirect: 'noRedirect' // 不可点击跳转
-  //     // alwaysShow: true
-  //   },
-  //   children: [
-  //     {
-  //       path: 'page',
-  //       component: () => import('@/views/permission/page.vue'),
-  //       name: 'PagePermission',
-  //       meta: {
-  //         title: 'Page Permission',
-  //         roles: ['admin']
-  //       }
-  //     },
-  //     {
-  //       path: 'directive',
-  //       component: () => import('@/views/permission/directive.vue'),
-  //       name: 'DirectivePermission',
-  //       meta: {
-  //         title: 'Directive Permission'
-  //       }
-  //     },
-  //     {
-  //       path: 'role',
-  //       component: () => import('@/views/permission/role.vue'),
-  //       name: 'RolePermission',
-  //       meta: {
-  //         title: 'Role Permission'
-  //         // breadcrumb: false // 不显示这个路由的面包屑
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/permission',
-  //   name: 'Permission',
-  //   component: Layout,
-  //   redirect: '/permission/page',
-  //   meta: {
-  //     title: 'Permission',
-  //     icon: 'lock',
-  //     roles: ['admin', 'editor']
-  //     // redirect: 'noRedirect' // 不可点击跳转
-  //     // alwaysShow: true
-  //   },
-  //   children: [
-  //     {
-  //       path: 'page',
-  //       component: () => import('@/views/permission/page.vue'),
-  //       name: 'PagePermission',
-  //       meta: {
-  //         title: 'Page Permission',
-  //         roles: ['admin']
-  //       }
-  //     },
-  //     {
-  //       path: 'directive',
-  //       component: () => import('@/views/permission/directive.vue'),
-  //       name: 'DirectivePermission',
-  //       meta: {
-  //         title: 'Directive Permission'
-  //       }
-  //     },
-  //     {
-  //       path: 'role',
-  //       component: () => import('@/views/permission/role.vue'),
-  //       name: 'RolePermission',
-  //       meta: {
-  //         title: 'Role Permission'
-  //         // breadcrumb: false // 不显示这个路由的面包屑
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/permission',
-  //   name: 'Permission',
-  //   component: Layout,
-  //   redirect: '/permission/page',
-  //   meta: {
-  //     title: 'Permission',
-  //     icon: 'lock',
-  //     roles: ['admin', 'editor']
-  //     // redirect: 'noRedirect' // 不可点击跳转
-  //     // alwaysShow: true
-  //   },
-  //   children: [
-  //     {
-  //       path: 'page',
-  //       component: () => import('@/views/permission/page.vue'),
-  //       name: 'PagePermission',
-  //       meta: {
-  //         title: 'Page Permission',
-  //         roles: ['admin']
-  //       }
-  //     },
-  //     {
-  //       path: 'directive',
-  //       component: () => import('@/views/permission/directive.vue'),
-  //       name: 'DirectivePermission',
-  //       meta: {
-  //         title: 'Directive Permission'
-  //       }
-  //     },
-  //     {
-  //       path: 'role',
-  //       component: () => import('@/views/permission/role.vue'),
-  //       name: 'RolePermission',
-  //       meta: {
-  //         title: 'Role Permission'
-  //         // breadcrumb: false // 不显示这个路由的面包屑
-  //       }
-  //     }
-  //   ]
-  // }
 ]
 
 const routes: Array<RouteRecordRaw> = constantRoutes

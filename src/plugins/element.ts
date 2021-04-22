@@ -21,7 +21,9 @@ import {
   ElScrollbar,
   ElMessage,
   ElSelect,
-  ElOption
+  ElOption,
+  ElRadioGroup,
+  ElRadioButton
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -54,7 +56,9 @@ export default (app: ReturnType<typeof createApp>) => {
     ElBreadcrumbItem,
     ElScrollbar,
     ElSelect,
-    ElOption
+    ElOption,
+    ElRadioGroup,
+    ElRadioButton
   ]
 
   components.forEach(component => {

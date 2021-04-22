@@ -1,6 +1,7 @@
-import { Module, Mutation, Action, MutationTree, ActionTree } from 'vuex'
+import { Module, MutationTree, ActionTree } from 'vuex'
+import { RouteRecordRaw } from 'vue-router'
 import { IRootState } from '@/store'
-import { resetRouter } from '@/router'
+import router, { resetRouter } from '@/router'
 import { login, getInfo, logout } from './../../api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
@@ -91,8 +92,8 @@ const actions: IActions = {
       })
     })
   },
-  logout({ commit, state, dispatch }) {
-    return new Promise<void>((resolve, reject) => {
+  logout({ state, dispatch }) {
+    return new Promise<void>((resolve) => {
       logout(state.token).then(() => {
         dispatch('resetToken')
         resetRouter()
@@ -107,6 +108,25 @@ const actions: IActions = {
       removeToken()
       resolve()
     })
+  },
+  async changeRoles({ dispatch, commit }, role: string) {
+    // 应该调取后端切换角色接口 获取新token
+    const token = role + '-token'
+    commit('SET_TOKEN', token)
+    setToken(token)
+
+    // 重置路由
+    resetRouter()
+
+    // 重新生成可访问路由
+    const { roles } = await dispatch('getInfo')
+    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+    accessRoutes.forEach((route: RouteRecordRaw) => {
+      router.addRoute(route)
+    })
+
+    // 重置tag views
+    dispatch('tagsView/delAllViews', null, { root: true })
   }
 }
 
