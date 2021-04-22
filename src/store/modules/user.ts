@@ -97,6 +97,8 @@ const actions: IActions = {
       logout(state.token).then(() => {
         dispatch('resetToken')
         resetRouter()
+        // 重置tag views
+        dispatch('tagsView/delAllViews', null, { root: true })
         resolve()
       })
     })
