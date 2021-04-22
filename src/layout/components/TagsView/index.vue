@@ -60,7 +60,6 @@ import {
   getCurrentInstance,
   nextTick,
   onBeforeUpdate,
-  onUpdated,
   ComponentPublicInstance
 } from 'vue'
 import { RouteRecordNormalized, RouteRecordRaw, useRoute, useRouter, NavigationFailure } from 'vue-router'

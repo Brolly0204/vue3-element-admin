@@ -13,6 +13,7 @@ import '@/styles/index.scss'
 import './permission'
 // svg icons
 import initSvgIcon from '@/icons/index'
+import { Size } from './store/modules/app'
 
 //  本项目目前在生成环境下使用Mockjs，上线后应该移除
 if (process.env.NODE_ENV === 'production') {
@@ -24,6 +25,9 @@ if (process.env.NODE_ENV === 'production') {
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $message: typeof ElMessage;
+    $ELEMENT: {
+      size: Size;
+    };
   }
 }
 

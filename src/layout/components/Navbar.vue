@@ -9,6 +9,10 @@
         <search class="right-menu-item" />
         <!-- 全屏 -->
         <screenfull id="screefull" class="right-menu-item hover-effect" />
+        <!-- 字体大小 -->
+        <el-tooltip content="Global Size" effect="dark" placement="bottom">
+          <size-select class="right-menu-item hover-effect" />
+        </el-tooltip>
       </template>
 
       <el-dropdown
@@ -19,9 +23,9 @@
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <router-link to="/profile/index">
+            <!-- <router-link to="/profile/index">
               <el-dropdown-item>Profile</el-dropdown-item>
-            </router-link>
+            </router-link> -->
             <router-link to="/">
               <el-dropdown-item>Dashboard</el-dropdown-item>
             </router-link>
@@ -47,6 +51,7 @@ import Hambuger from '@/components/Hambuger/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Screenfull from '@/components/Screenfull/index.vue'
 import Search from '@/components/HeaderSearch/index.vue'
+import SizeSelect from '@/components/SizeSelect/index.vue'
 import { mapGetters } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
@@ -56,7 +61,8 @@ export default defineComponent({
     Hambuger,
     Breadcrumb,
     Screenfull,
-    Search
+    Search,
+    SizeSelect
   },
   setup() {
     const store = useStore()
