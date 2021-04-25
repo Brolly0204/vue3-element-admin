@@ -1,13 +1,13 @@
-
-interface PlainObject {
-  [propName: string]: string;
-}
-export function param2Obj(url: string) {
+/**
+ * @param {string} url
+ * @returns {Object}
+ */
+function param2Obj(url) {
   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
   if (!search) {
     return {}
   }
-  const obj: PlainObject = {}
+  const obj = {}
   const searchArr = search.split('&')
   searchArr.forEach(v => {
     const index = v.indexOf('=')
@@ -20,13 +20,6 @@ export function param2Obj(url: string) {
   return obj
 }
 
-interface IObject {
-  [prop: string]: unknown;
-}
-const isPlainObject = (x: unknown): x is IObject => {
-  return typeof x === 'object' && x != null
-}
-
 /**
  * This is just a simple version of deep copy
  * Has a lot of edge cases bug
@@ -34,22 +27,22 @@ const isPlainObject = (x: unknown): x is IObject => {
  * @param {Object} source
  * @returns {Object}
  */
-export function deepClone<T extends unknown>(source: T): T {
+function deepClone(source) {
   if (!source && typeof source !== 'object') {
-    throw new Error('error arguments deepClone')
+    throw new Error('error arguments', 'deepClone')
   }
-
-  if (Array.isArray(source)) {
-    return source.map(item => deepClone(item)) as T
-  }
-
-  const targetObj = {} as T
-  for (const key in source) {
-    if (isPlainObject(source[key])) {
-      targetObj[key] = deepClone(source[key])
+  const targetObj = source.constructor === Array ? [] : {}
+  Object.keys(source).forEach(keys => {
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = deepClone(source[keys])
     } else {
-      targetObj[key] = source[key]
+      targetObj[keys] = source[keys]
     }
-  }
+  })
   return targetObj
+}
+
+module.exports = {
+  param2Obj,
+  deepClone
 }

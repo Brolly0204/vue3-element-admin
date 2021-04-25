@@ -26,7 +26,11 @@ import {
   ElRadioButton,
   ElTag,
   ElTabs,
-  ElTabPane
+  ElTabPane,
+  ElTable,
+  ElTableColumn,
+  ElTree,
+  ElNotification
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -64,7 +68,11 @@ export default (app: App) => {
     ElRadioButton,
     ElTag,
     ElTabs,
-    ElTabPane
+    ElTabPane,
+    ElTable,
+    ElTableColumn,
+    ElTree,
+    ElNotification
   ]
 
   components.forEach(component => {
@@ -72,6 +80,7 @@ export default (app: App) => {
   })
 
   app.config.globalProperties.$message = ElMessage
+  app.config.globalProperties.$notify = ElNotification
 
   // 全局配置
   // 该对象目前支持 size 与 zIndex 字段。size 用于改变组件的默认尺寸 small，zIndex 设置弹框的初始 z-index（默认值：2000）。

@@ -2,6 +2,7 @@
 const Mock = require('mockjs')
 // const { param2Obj } = require('./utils')
 const user = require('./user.js')
+const role = require('./role')
 
 function param2Obj(url) {
   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
@@ -22,7 +23,8 @@ function param2Obj(url) {
 }
 
 const mocks = [
-  ...user
+  ...user,
+  ...role
 ]
 
 function mockXHR() {

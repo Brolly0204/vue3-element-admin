@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
+import { IResponseDataType } from '@/api/type'
 // import store from '@/store';
 
 const service = axios.create({
