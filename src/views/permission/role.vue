@@ -31,11 +31,11 @@
           <el-button
             size="small"
             type="primary"
-            @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+            @click="handleEdit(scope.row)">Edit</el-button>
           <el-button
             size="small"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+            @click="handleDelete(scope.row)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -68,6 +68,7 @@
             :props="defaultProps"
             show-checkbox
             node-key="path"
+            :check-strictly="checkStrictly"
           />
         </el-form-item>
       </el-form>
@@ -81,17 +82,11 @@
 
 <script lang="ts">
 import path from 'path'
-import { computed, defineComponent, ref, getCurrentInstance } from 'vue'
+import { computed, defineComponent, ref, getCurrentInstance, nextTick } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 import { ElTree } from 'element-plus'
-import { getRoles, getRoutes, addRole } from '@/api/role'
+import { getRoles, getRoutes, addRole, updateRole } from '@/api/role'
 import { deepClone } from '@/utils'
-
-interface ITableItemData {
-  key: string;
-  name: string;
-  description: string;
-}
 
 interface IRoutesData {
   title: string;
@@ -122,8 +117,9 @@ export default defineComponent({
     const { proxy } = getCurrentInstance()!
     const dialogVisible = ref(false)
     const dialogType = ref<'new'|'edit'>('new')
-    const roleModel = ref(Object.assign({}, defaultRoleModel))
-    const rolesList = ref<ITableItemData[]>([])
+    const checkStrictly = ref(false)
+    const roleModel = ref<IRoleFormModel>(Object.assign({}, defaultRoleModel))
+    const rolesList = ref<IRoleFormModel[]>([])
     const routes = ref<IRoutesData[]>([])
     const serviceRoutes = ref<Array<RouteRecordRaw>>([])
     const defaultProps = ref({
@@ -133,18 +129,6 @@ export default defineComponent({
     const routeTree = ref<ElTreeInstance | null>(null)
 
     const routesData = computed(() => routes.value)
-
-    const handleAddRole = () => {
-      dialogVisible.value = true
-    }
-
-    const handleEdit = (index: number, row: ITableItemData) => {
-      console.log(index, row)
-    }
-
-    const handleDelete = (index: number, row: ITableItemData) => {
-      console.log(index, row)
-    }
 
     const getOnlyOneShowingChild = (children: Array<RouteRecordRaw> = [], parent: RouteRecordRaw) => {
       let onlyOneChild = null
@@ -161,6 +145,21 @@ export default defineComponent({
         return onlyOneChild
       }
       return false
+    }
+
+    // 将路由以及children展平为二维数组
+    const flattenRoutes = (routes: IRoutesData[]) => {
+      let data: IRoutesData[] = []
+      for (const route of routes) {
+        data.push(route)
+        if (route.children) {
+          const temp = flattenRoutes(route.children)
+          if (temp.length > 0) {
+            data = [...data, ...temp]
+          }
+        }
+      }
+      return data
     }
 
     const generateRoutes = (routes: Array<RouteRecordRaw>, basePath = '/') => {
@@ -206,12 +205,39 @@ export default defineComponent({
       return res
     }
 
+    const handleAddRole = () => {
+      dialogVisible.value = true
+    }
+
+    const handleEdit = (row: IRoleFormModel) => {
+      dialogVisible.value = true
+      dialogType.value = 'edit'
+      checkStrictly.value = true
+      roleModel.value = deepClone(row)
+      nextTick(() => {
+        const routes = generateRoutes(roleModel.value.routes as Array<RouteRecordRaw>)
+        const routeArr = flattenRoutes(routes) // 将路由以及children展平为二维数组
+        const keys = routeArr.map(item => item.path)
+        // 根据key设置tree节点选中态
+        // eslint-disable-next-line no-unused-expressions
+        routeTree.value?.setCheckedKeys(keys, false)
+        checkStrictly.value = false
+      })
+    }
+
+    const handleDelete = (row: IRoleFormModel) => {
+      console.log(row)
+    }
+
     const confirmRole = async () => {
       const checkedKeys = (routeTree.value as ElTreeInstance).getCheckedKeys(false) // true 只包含叶子节点 false包含所有节点
       roleModel.value.routes = generateTree(deepClone(serviceRoutes.value as Array<RouteRecordRaw>), '/', checkedKeys)
       const isEdit = dialogType.value === 'edit'
       if (isEdit) {
         // todo
+        await updateRole(roleModel.value.key, roleModel.value)
+        const index = rolesList.value.findIndex(role => role.key === roleModel.value.key)
+        rolesList.value.splice(index, 1, deepClone(roleModel.value))
       } else {
         const { data } = await addRole(roleModel) as { data: { key: string } }
         roleModel.value.key = data.key
@@ -254,6 +280,7 @@ export default defineComponent({
       defaultProps,
       dialogVisible,
       dialogType,
+      checkStrictly,
       roleModel,
       handleEdit,
       handleDelete,

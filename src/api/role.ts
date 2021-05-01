@@ -35,3 +35,15 @@ export const addRole = (data: object) => {
     })
   })
 }
+
+export const updateRole = (id: string, data: object) => {
+  return new Promise(resolve => {
+    request({
+      url: '/vue-element-admin/role/' + id,
+      method: 'put',
+      data
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
