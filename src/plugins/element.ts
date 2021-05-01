@@ -30,7 +30,8 @@ import {
   ElTable,
   ElTableColumn,
   ElTree,
-  ElNotification
+  ElNotification,
+  ElMessageBox
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -72,7 +73,8 @@ export default (app: App) => {
     ElTable,
     ElTableColumn,
     ElTree,
-    ElNotification
+    ElNotification,
+    ElMessageBox
   ]
 
   components.forEach(component => {
@@ -81,6 +83,9 @@ export default (app: App) => {
 
   app.config.globalProperties.$message = ElMessage
   app.config.globalProperties.$notify = ElNotification
+  app.config.globalProperties.$confirm = ElMessageBox.confirm
+  app.config.globalProperties.$alert = ElMessageBox.alert
+  app.config.globalProperties.$prompt = ElMessageBox.prompt
 
   // 全局配置
   // 该对象目前支持 size 与 zIndex 字段。size 用于改变组件的默认尺寸 small，zIndex 设置弹框的初始 z-index（默认值：2000）。

@@ -4,7 +4,7 @@ import router from './router'
 import store, { key } from './store'
 // element plus
 import ElementPlus from '@/plugins/element'
-import { ElMessage, ElNotification } from 'element-plus'
+import { ElMessageBox, ElMessage, ElNotification } from 'element-plus'
 // 初始化css 重置css默认样式
 import 'normalize.css/normalize.css'
 // 全局 css
@@ -26,6 +26,9 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $message: typeof ElMessage;
     $notify: typeof ElNotification;
+    $confirm: typeof ElMessageBox.confirm;
+    $alert: typeof ElMessageBox.alert;
+    $prompt: typeof ElMessageBox.prompt;
     $ELEMENT: {
       size: Size;
     };

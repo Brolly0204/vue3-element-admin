@@ -85,7 +85,7 @@ import path from 'path'
 import { computed, defineComponent, ref, getCurrentInstance, nextTick } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 import { ElTree } from 'element-plus'
-import { getRoles, getRoutes, addRole, updateRole } from '@/api/role'
+import { getRoles, getRoutes, addRole, updateRole, deleteRole } from '@/api/role'
 import { deepClone } from '@/utils'
 
 interface IRoutesData {
@@ -226,7 +226,19 @@ export default defineComponent({
     }
 
     const handleDelete = (row: IRoleFormModel) => {
-      console.log(row)
+      // eslint-disable-next-line no-unused-expressions
+      proxy?.$confirm('Confirm to remove the role?', 'Warning', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async () => {
+        await deleteRole(row.key)
+        rolesList.value = rolesList.value.filter(role => role.key !== row.key)
+        proxy.$message({
+          type: 'success',
+          message: 'Delete succed!'
+        })
+      }).catch(err => { console.error(err) })
     }
 
     const confirmRole = async () => {

@@ -84,5 +84,17 @@ module.exports = [
         }
       }
     }
+  },
+  {
+    url: '/vue-element-admin/role/[A-Za-z0-9]',
+    type: 'delete',
+    response: _ => {
+      return {
+        code: 20000,
+        data: {
+          status: 'success'
+        }
+      }
+    }
   }
 ]

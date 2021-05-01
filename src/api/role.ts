@@ -47,3 +47,14 @@ export const updateRole = (id: string, data: object) => {
     })
   })
 }
+
+export const deleteRole = (id: string) => {
+  return new Promise(resolve => {
+    request({
+      url: '/vue-element-admin/role/' + id,
+      method: 'delete'
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
