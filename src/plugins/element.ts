@@ -31,7 +31,10 @@ import {
   ElTableColumn,
   ElTree,
   ElNotification,
-  ElMessageBox
+  ElMessageBox,
+  ElDrawer,
+  ElSwitch,
+  ElColorPicker
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -74,7 +77,10 @@ export default (app: App) => {
     ElTableColumn,
     ElTree,
     ElNotification,
-    ElMessageBox
+    ElMessageBox,
+    ElDrawer,
+    ElSwitch,
+    ElColorPicker
   ]
 
   components.forEach(component => {

@@ -4,6 +4,7 @@ import permission, { IPermissionState } from '@/store/modules/permission'
 import user, { IUserState } from '@/store/modules/user'
 import app, { IAppState } from '@/store/modules/app'
 import tagsView, { ITagsViewState } from '@/store/modules/tagsView'
+import settings, { ISettingsState } from '@/store/modules/settings'
 import getters from '@/store/getters'
 
 export interface IRootState {
@@ -11,6 +12,7 @@ export interface IRootState {
   user: IUserState;
   app: IAppState;
   tagsView: ITagsViewState;
+  settings: ISettingsState;
 }
 
 // https://next.vuex.vuejs.org/guide/typescript-support.html#simplifying-usestore-usage
@@ -23,7 +25,8 @@ export default createStore<IRootState>({
     permission,
     user,
     app,
-    tagsView
+    tagsView,
+    settings
   }
 })
 

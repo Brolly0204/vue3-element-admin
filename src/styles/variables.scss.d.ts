@@ -1,4 +1,4 @@
-export interface ScssVariables {
+export interface IScssVariables {
   menuText: string;
   menuActiveText: string;
   subMenuActiveText: string;
@@ -9,6 +9,6 @@ export interface ScssVariables {
   sideBarWidth: string;
 }
 
-export const variables: ScssVariables
+export const variables: IScssVariables
 
 export default variables

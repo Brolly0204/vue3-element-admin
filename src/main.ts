@@ -5,6 +5,9 @@ import store, { key } from './store'
 // element plus
 import ElementPlus from '@/plugins/element'
 import { ElMessageBox, ElMessage, ElNotification } from 'element-plus'
+
+// element theme css
+import '@/styles/element-variables.scss'
 // 初始化css 重置css默认样式
 import 'normalize.css/normalize.css'
 // 全局 css

@@ -12,18 +12,28 @@
         <tags-view />
       </div>
       <app-main />
+      <right-panel
+        v-model="showSetting"
+        :show-close="false"
+        custom-class='setting-panel'
+        :with-header="false"
+      >
+        <settings />
+      </right-panel>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useStore } from '@/store'
 import Sidebar from './components/sidebar/index.vue'
 import Navbar from './components/Navbar.vue'
 import TagsView from './components/TagsView/index.vue'
 import AppMain from './components/AppMain.vue'
+import Settings from './components/Settings/index.vue'
 import useResize from './hooks/useResize'
+import RightPanel from '@/components/RightPanel/index.vue'
 
 export default defineComponent({
   name: 'Layout',
@@ -31,11 +41,14 @@ export default defineComponent({
     Sidebar,
     Navbar,
     TagsView,
-    AppMain
+    AppMain,
+    Settings,
+    RightPanel
   },
   setup() {
-    const store = useStore()
     useResize()
+    const showSetting = ref(true)
+    const store = useStore()
     const device = computed(() => store.state.app.device)
     const sidebar = computed(() => store.state.app.sidebar)
     const classes = computed(() => {
@@ -52,6 +65,7 @@ export default defineComponent({
     }
 
     return {
+      showSetting,
       classes,
       sidebar,
       device,
