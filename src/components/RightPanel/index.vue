@@ -67,18 +67,15 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const store = useStore()
-    console.log('modelValue', props)
     const show = ref(props.modelValue)
     const rightVal = computed(() => show.value ? 260 : 0)
 
     const handleClose = () => {
-      console.log('close')
       show.value = false
       emit('update:modelValue', false)
     }
     const toggleShowSetting = () => {
       show.value = !show.value
-      console.log(show.value)
       emit('update:modelValue', show.value)
     }
 

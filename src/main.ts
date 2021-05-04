@@ -12,6 +12,7 @@ import '@/styles/element-variables.scss'
 import 'normalize.css/normalize.css'
 // 全局 css
 import '@/styles/index.scss'
+
 // 权限管理
 import './permission'
 // svg icons
