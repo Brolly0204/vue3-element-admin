@@ -34,8 +34,15 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  如果有tagsview + 34  */
-  min-height: calc(100vh - 84px);
+  /* navbar 50px  */
+  min-height: calc(100vh - 50px);
+}
+
+.hasTagsView {
+  .app-main {
+    /* 85 = navbar + tags-view = 50 + 35 */
+    min-height: calc(100vh - 85px);
+  }
 }
 
 .fade-transform-enter-active,

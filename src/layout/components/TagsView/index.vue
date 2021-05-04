@@ -319,7 +319,7 @@ export default defineComponent({
       line-height: 26px;
       border: 1px solid #d8dce5;
       background: #fff;
-      color: #490560;
+      color: #495060;
       padding: 0 8px;
       box-sizing: border-box;
       font-size: 12px;

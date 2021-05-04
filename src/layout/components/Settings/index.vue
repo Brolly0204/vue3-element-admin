@@ -24,12 +24,57 @@
 </template>
 
 <script>
+import { useStore } from '@/store'
 import ThemePicker from '@/components/ThemePicker/index.vue'
+import { computed } from '@vue/runtime-core'
 
 export default {
   name: 'Settings',
   components: {
     ThemePicker
+  },
+  setup() {
+    const store = useStore()
+    const tagsView = computed({
+      get() {
+        return store.state.settings.tagsView
+      },
+      set(val) {
+        store.dispatch('settings/changeSetting', {
+          key: 'tagsView',
+          value: val
+        })
+      }
+    })
+    const sidebarLogo = computed({
+      get() {
+        return store.state.settings.sidebarLogo
+      },
+      set(val) {
+        store.dispatch('settings/changeSetting', {
+          key: 'sidebarLogo',
+          value: val
+        })
+      }
+    })
+
+    const fixedHeader = computed({
+      get() {
+        return store.state.settings.fixedHeader
+      },
+      set(val) {
+        store.dispatch('settings/changeSetting', {
+          key: 'fixedHeader',
+          value: val
+        })
+      }
+    })
+
+    return {
+      tagsView,
+      sidebarLogo,
+      fixedHeader
+    }
   }
 }
 </script>

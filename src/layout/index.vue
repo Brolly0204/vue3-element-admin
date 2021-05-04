@@ -6,13 +6,20 @@
       @click="handleClickOutside"
     />
     <sidebar class="sidebar-container" />
-    <div class="main-container">
-      <div class="header">
+    <div
+      class="main-container"
+      :class="{hasTagsView: needTagsView}"
+    >
+      <div
+        class="header"
+        :class="{'fixed-header': fixedHeader}"
+      >
         <navbar />
-        <tags-view />
+        <tags-view v-if="needTagsView" />
       </div>
       <app-main />
       <right-panel
+        v-if="showSettings"
         v-model="showSetting"
         :show-close="false"
         custom-class='setting-panel'
@@ -47,10 +54,13 @@ export default defineComponent({
   },
   setup() {
     useResize()
-    const showSetting = ref(true)
     const store = useStore()
+    const showSetting = ref(false)
     const device = computed(() => store.state.app.device)
     const sidebar = computed(() => store.state.app.sidebar)
+    const needTagsView = computed(() => store.state.settings.tagsView)
+    const fixedHeader = computed(() => store.state.settings.fixedHeader)
+    const showSettings = computed(() => store.state.settings.showSettings)
     const classes = computed(() => {
       return {
         hideSidebar: !store.getters.sidebar.opened,
@@ -69,6 +79,9 @@ export default defineComponent({
       classes,
       sidebar,
       device,
+      needTagsView,
+      fixedHeader,
+      showSettings,
       handleClickOutside
     }
   }
@@ -76,6 +89,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+  @import "~@/styles/variables.scss";
+
   .app-wrapper {
     display: flex;
     width: 100%;
@@ -85,7 +100,8 @@ export default defineComponent({
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: scroll;
       .header {
         background: cyan;
       }
@@ -100,5 +116,32 @@ export default defineComponent({
       background: rgba(0, 0, 0, .3);
       z-index: 100;
     }
+  }
+
+  .hasTagsView {
+    .fixed-header + .app-main {
+      padding-top: 85px;
+    }
+  }
+
+  .fixed-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: calc(100% - #{$sideBarWidth});
+    z-index: 9;
+    transition: width 0.28s;
+  }
+
+  .fixed-header + .app-main {
+    padding-top: 50px;
+  }
+
+  .hideSidebar .fixed-header {
+    width: calc(100% - 54px)
+  }
+
+  .mobile .fixed-header {
+    width: 100%;
   }
 </style>

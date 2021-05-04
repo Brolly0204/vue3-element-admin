@@ -1,13 +1,24 @@
 import { MutationTree, ActionTree } from 'vuex'
 import variables from '@/styles/element-variables.scss'
 import { IRootState } from './../index'
+import defaultSettings from '@/settings'
 
 export interface ISettingsState {
   theme: string;
+  tagsView: boolean;
+  sidebarLogo: boolean;
+  fixedHeader: boolean;
+  showSettings: boolean;
 }
 
+const { tagsView, sidebarLogo, fixedHeader, showSettings } = defaultSettings
+
 const state: ISettingsState = {
-  theme: variables.theme
+  theme: variables.theme,
+  tagsView,
+  sidebarLogo,
+  fixedHeader,
+  showSettings
 }
 
 // 约束value  http://www.voidcn.com/article/p-wtmkdcie-byz.html

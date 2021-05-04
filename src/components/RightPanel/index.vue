@@ -8,7 +8,6 @@
       :custom-class="customClass"
       :with-header="withHeader"
       @close="handleClose"
-      @closeed="handleClose"
     >
       <slot />
     </el-drawer>

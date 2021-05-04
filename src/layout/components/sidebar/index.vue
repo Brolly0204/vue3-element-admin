@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-scrollbar wrap-class="scrollbar-wrapper">
-      <logo :collapse="isCollapse" />
+      <logo v-if="showLogo" :collapse="isCollapse" />
       <el-menu
         :unique-opened="false"
         :default-active="activeMenu"
@@ -52,13 +52,16 @@ export default defineComponent({
 
     const isCollapse = computed(() => !store.getters.sidebar.opened)
 
+    const showLogo = computed(() => store.state.settings.sidebarLogo)
+
     const scssVariables = computed(() => variables)
 
     return {
       activeMenu,
       scssVariables,
       permissionRoutes,
-      isCollapse
+      isCollapse,
+      showLogo
     }
   }
 })
