@@ -42,7 +42,10 @@ export default defineComponent({
     const store = useStore()
 
     const activeMenu = computed(() => {
-      const { path } = route
+      const { path, meta } = route
+      if (meta && meta.activeMenu) {
+        return meta.activeMenu
+      }
       return path
     })
 

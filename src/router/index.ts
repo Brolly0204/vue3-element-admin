@@ -70,7 +70,8 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "guide" */ '@/views/guide/index.vue'),
         meta: {
           title: 'Guide',
-          icon: 'guide'
+          icon: 'guide',
+          activeMenu: '/dashboard' // 跳转这个路由时 手动指定高亮菜单
         }
       }
     ]
