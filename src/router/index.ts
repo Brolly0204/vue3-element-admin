@@ -154,6 +154,21 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/user/index.vue'),
+        name: 'UserManagement',
+        meta: {
+          title: '用户管理',
+          icon: 'el-icon-user-solid'
+        }
+      }
+    ]
+  },
+  { // 需放在最后面
     path: '/:pathMatch(.*)*',
     redirect: '/404',
     meta: {
