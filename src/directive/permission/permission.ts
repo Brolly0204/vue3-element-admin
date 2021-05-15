@@ -2,7 +2,7 @@ import { ObjectDirective, DirectiveBinding, App } from 'vue'
 import { computed } from '@vue/reactivity'
 import store from '@/store'
 
-interface IDirectiveOptionsWithInstall extends ObjectDirective {
+export interface IDirectiveOptionsWithInstall extends ObjectDirective {
   install?: (app: App) => void;
 }
 
@@ -24,11 +24,17 @@ const checkPermission = (el: HTMLElement, binding: DirectiveBinding) => {
   }
 }
 
-export default {
-  mounted(el: HTMLElement, binding: DirectiveBinding) {
-    checkPermission(el, binding)
-  },
-  updated(el: HTMLElement, binding: DirectiveBinding) {
-    checkPermission(el, binding)
-  }
-} as IDirectiveOptionsWithInstall
+// export default {
+//   mounted(el: HTMLElement, binding: DirectiveBinding) {
+//     checkPermission(el, binding)
+//   },
+//   updated(el: HTMLElement, binding: DirectiveBinding) {
+//     checkPermission(el, binding)
+//   }
+// } as IDirectiveOptionsWithInstall
+
+const plugin = (el: HTMLElement, binding: DirectiveBinding) => {
+  checkPermission(el, binding)
+}
+
+export default plugin as IDirectiveOptionsWithInstall
