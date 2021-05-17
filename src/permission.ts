@@ -7,7 +7,8 @@ import { ElMessage } from 'element-plus'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login']
+// 白名单
+const whiteList = ['/login', '/register']
 router.beforeEach(async (to, from) => {
   NProgress.start()
   const hasToken = getToken()

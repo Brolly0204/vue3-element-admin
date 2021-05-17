@@ -35,10 +35,6 @@ import { useStore } from '@/store'
 export default defineComponent({
   name: 'RightPanel',
   props: {
-    modelValue: {
-      type: Boolean,
-      default: true
-    },
     direction: {
       type: String,
       validator(val: string) {
@@ -66,7 +62,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const store = useStore()
-    const show = ref(props.modelValue)
+    const show = ref(false)
     const rightVal = computed(() => show.value ? 260 : 0)
 
     const handleClose = () => {

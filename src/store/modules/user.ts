@@ -64,13 +64,13 @@ const actions: IActions = {
         if (!data) {
           reject(new Error('Verification failed, please Login again.'))
         }
-        const { roles, name, introduction, avatar } = data
+        const { roles, username, introduction, avatar } = data
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject(new Error('getInfo: roles must be a non-null array!'))
         }
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SET_NAME', username)
         commit('SET_INTRODUCTION', introduction)
         commit('SET_AVATAR', avatar)
         resolve(data)
@@ -84,6 +84,7 @@ const actions: IActions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password }).then(response => {
         const { data } = response
+        console.log('data', data)
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve(data)

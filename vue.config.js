@@ -33,6 +33,16 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js'),
+    proxy: {
+      '/node-api': {
+        target: 'http://localhost:3003',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/node-api': ''
+        }
+      }
+    }
   }
 }

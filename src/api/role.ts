@@ -1,9 +1,9 @@
-import request from '@/utils/request'
+import mockRequest from '@/utils/requestMock'
 import { IResponseDataType } from './type'
 
 export const getRoles = () => {
   return new Promise<IResponseDataType>(resolve => {
-    request({
+    mockRequest({
       url: '/vue-element-admin/roles',
       method: 'get'
     }).then((res) => {
@@ -15,7 +15,7 @@ export const getRoles = () => {
 
 export const getRoutes = () => {
   return new Promise(resolve => {
-    request({
+    mockRequest({
       url: '/vue-element-admin/routes',
       method: 'get'
     }).then(res => {
@@ -26,7 +26,7 @@ export const getRoutes = () => {
 
 export const addRole = (data: object) => {
   return new Promise(resolve => {
-    request({
+    mockRequest({
       url: '/vue-element-admin/role',
       method: 'post',
       data
@@ -38,7 +38,7 @@ export const addRole = (data: object) => {
 
 export const updateRole = (id: string, data: object) => {
   return new Promise(resolve => {
-    request({
+    mockRequest({
       url: '/vue-element-admin/role/' + id,
       method: 'put',
       data
@@ -50,7 +50,7 @@ export const updateRole = (id: string, data: object) => {
 
 export const deleteRole = (id: string) => {
   return new Promise(resolve => {
-    request({
+    mockRequest({
       url: '/vue-element-admin/role/' + id,
       method: 'delete'
     }).then(res => {

@@ -63,7 +63,7 @@ export default defineComponent({
       }
     ])
 
-    const handleClick = (row) => {
+    const handleClick = (row: object) => {
       console.log(row)
     }
     return {
