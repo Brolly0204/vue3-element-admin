@@ -35,6 +35,10 @@ import { useStore } from '@/store'
 export default defineComponent({
   name: 'RightPanel',
   props: {
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
     direction: {
       type: String,
       validator(val: string) {

@@ -2,15 +2,31 @@ import { Module, MutationTree, ActionTree } from 'vuex'
 import { RouteRecordRaw } from 'vue-router'
 import { IRootState } from '@/store'
 import router, { resetRouter } from '@/router'
-import { login, getInfo, logout } from './../../api/user'
+import { login, getInfo, logout, getUserList } from './../../api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
+interface Role {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface IUserItem {
+  id: number;
+  username: string;
+  email: string;
+  mobile: string | null;
+  isSuper: boolean;
+  status: boolean;
+  roles: Role[];
+}
 export interface IUserState {
   token: string;
   name: string;
   avatar: string;
   introduction: string;
   roles: string[];
+  users: IUserItem[];
 }
 
 // interface IMutations {
@@ -35,7 +51,8 @@ const state: IUserState = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  users: []
 }
 
 const mutations: IMutations = {
@@ -53,10 +70,20 @@ const mutations: IMutations = {
   },
   SET_INTRODUCTION(state, introduction: string) {
     state.introduction = introduction
+  },
+  SET_USERS(state, users: IUserItem[]) {
+    state.users = users
   }
 }
 
 const actions: IActions = {
+  getUserRoleList({ commit }, { pageNum, pageSize }) {
+    getUserList(pageNum, pageSize).then(response => {
+      console.log('response', response)
+      const { data } = response
+      commit('SET_USERS', data.users)
+    })
+  },
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {

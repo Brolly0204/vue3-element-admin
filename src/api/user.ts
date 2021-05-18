@@ -17,6 +17,14 @@ export const login = (data: IUserInfo) => {
 //   })
 // }
 
+export function logout(token: string) {
+  return mockRequest({
+    url: '/vue-element-admin/user/logout',
+    method: 'post',
+    data: { token }
+  })
+}
+
 export function getInfo(token: string) {
   return request({
     // url: '/vue-element-admin/user/info',
@@ -25,10 +33,10 @@ export function getInfo(token: string) {
   })
 }
 
-export function logout(token: string) {
-  return mockRequest({
-    url: '/vue-element-admin/user/logout',
-    method: 'post',
-    data: { token }
+export function getUserList(pageNum = 0, pageSize = 10) {
+  return request({
+    url: '/user/list',
+    method: 'get',
+    params: { pageNum, pageSize }
   })
 }

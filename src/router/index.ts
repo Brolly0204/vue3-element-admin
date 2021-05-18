@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, Router, RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
 export const constantRoutes: Array<RouteRecordRaw> = [
@@ -105,6 +105,46 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 
 export const asyncRoutes: Array<RouteRecordRaw> = [
   {
+    path: '/system',
+    name: 'System',
+    component: Layout,
+    redirect: '/system/user',
+    meta: {
+      title: 'System',
+      icon: 'el-icon-s-tools',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/system/user.vue'),
+        name: 'UserManagement',
+        meta: {
+          title: 'User Management',
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'menu',
+        component: () => import('@/views/system/menu.vue'),
+        name: 'MenuManagement',
+        meta: {
+          title: 'Menu Management',
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/system/role.vue'),
+        name: 'RoleManagement',
+        meta: {
+          title: 'Role Management',
+          roles: ['admin']
+        }
+      }
+    ]
+  },
+  {
     path: '/permission',
     name: 'Permission',
     component: Layout,
@@ -156,21 +196,6 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
         meta: {
           title: '图标',
           icon: 'icon'
-        }
-      }
-    ]
-  },
-  {
-    path: '/user',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/user/index.vue'),
-        name: 'UserManagement',
-        meta: {
-          title: '用户管理',
-          icon: 'el-icon-user-solid'
         }
       }
     ]
