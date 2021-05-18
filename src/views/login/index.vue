@@ -97,7 +97,7 @@ import {
 } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 import useRouteQuery from './hooks/useRouteQuery'
 import SocialSign from './components/SocialSign.vue'
 // import { ElForm } from 'element-plus'
@@ -115,7 +115,8 @@ export default defineComponent({
     const { redirect, otherQuery } = useRouteQuery()
 
     const validateUsername = (rule: any, value: string, callback: Function) => {
-      if (!validUsername(value)) {
+      // if (!validUsername(value)) {
+      if (value.trim().length === 0) {
         callback(new Error('Please enter the correct user name'))
       } else {
         callback()
