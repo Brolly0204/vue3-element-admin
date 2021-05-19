@@ -34,7 +34,8 @@ import {
   ElMessageBox,
   ElDrawer,
   ElSwitch,
-  ElColorPicker
+  ElColorPicker,
+  ElCard
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // Element Plus 组件内部默认使用英语
@@ -80,7 +81,8 @@ export default (app: App) => {
     ElMessageBox,
     ElDrawer,
     ElSwitch,
-    ElColorPicker
+    ElColorPicker,
+    ElCard
   ]
 
   components.forEach(component => {

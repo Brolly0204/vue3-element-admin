@@ -104,6 +104,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .app-container {
+  background-color: #fff;
+  height: 100%;
   ::v-deep .permission-alert {
     width: 320px;
     margin-top: 15px;

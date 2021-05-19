@@ -1,6 +1,5 @@
 <template>
   <div class="app-main">
-    <h2>app main</h2>
     <!-- vue3 路由缓存 https://next.router.vuejs.org/guide/migration/index.html#router-view-keep-alive-and-transition -->
     <router-view v-slot={Component}>
       <transition name="fade-transform" mode="out-in">
@@ -36,6 +35,9 @@ export default defineComponent({
 .app-main {
   /* navbar 50px  */
   min-height: calc(100vh - 50px);
+  background-color: #f5f7f9;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .hasTagsView {

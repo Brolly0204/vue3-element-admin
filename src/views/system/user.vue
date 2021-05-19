@@ -90,7 +90,7 @@ export default defineComponent({
       status: null
     })
 
-    const checkMobile = (rule, value, callback) => {
+    const checkMobile = (rule: object, value: number, callback: Function) => {
       console.log(value)
       if (value && (value + '').length !== 11) {
         callback(new Error('手机号只能为11位数字'))
